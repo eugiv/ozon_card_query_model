@@ -1,0 +1,7 @@
+catboost>=1.2.7
+mlflow>=2.16
+scikit-learn>=1.4
+pandas>=2.2
+numpy>=1.26
+clickhouse-connect>=0.7
+python-dotenv>=1.0

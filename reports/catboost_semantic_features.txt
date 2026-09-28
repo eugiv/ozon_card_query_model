@@ -1,0 +1,9 @@
+log_freq
+orders_past
+conv_past
+views_past
+days_past
+brand_hit
+word_overlap
+query_token_count
+semantic_cosine

@@ -1,0 +1,103 @@
+{
+  "windows": {
+    "train": {
+      "feat_start": "2026-06-05",
+      "feat_end": "2026-07-02",
+      "label_start": "2026-07-03",
+      "label_end": "2026-07-30"
+    },
+    "test": {
+      "feat_start": "2026-07-31",
+      "feat_end": "2026-08-27",
+      "label_start": "2026-08-28",
+      "label_end": "2026-09-24"
+    }
+  },
+  "counts": {
+    "train_pairs": 29060,
+    "train_positives": 7452,
+    "train_sku": 262,
+    "val_pairs": 6962,
+    "test_pairs": 28657,
+    "test_positives": 8335,
+    "test_sku": 278,
+    "brands": 53,
+    "cards_with_text": 1809
+  },
+  "params": {
+    "train_features": "2026-06-05..2026-07-02",
+    "train_labels": "2026-07-03..2026-07-30",
+    "test_features": "2026-07-31..2026-08-27",
+    "test_labels": "2026-08-28..2026-09-24",
+    "depth": 4,
+    "learning_rate": 0.08,
+    "iterations": 311,
+    "auto_class_weights": "Balanced",
+    "random_seed": 7,
+    "semantic": "tfidf_char_wb_3_5",
+    "val_pr_auc_stats": 0.692484,
+    "param_source": "https://catboost.ai/docs/en/concepts/parameter-tuning"
+  },
+  "results": {
+    "rule_past_order": {
+      "pr_auc": 0.4680789377056574,
+      "f1": 0.43644654344108785,
+      "precision": 0.6791687785098834,
+      "recall": 0.3215356928614277,
+      "threshold": 1.0,
+      "threshold_note": "orders_past > 0"
+    },
+    "catboost_stats": {
+      "pr_auc": 0.6858986839920069,
+      "f1": 0.613209080565639,
+      "precision": 0.5590792333530923,
+      "recall": 0.6789442111577685,
+      "threshold": 0.5499999999999999
+    },
+    "catboost_semantic": {
+      "pr_auc": 0.6831607474449223,
+      "f1": 0.6167449850942347,
+      "precision": 0.5327339385474861,
+      "recall": 0.7322135572885423,
+      "threshold": 0.5499999999999999
+    }
+  },
+  "robustness": {
+    "typos": {
+      "pr_auc": 0.6804342073933382,
+      "f1": 0.6116189000774593,
+      "precision": 0.5368993653671804,
+      "recall": 0.710497900419916,
+      "threshold": 0.5499999999999999,
+      "share_changed": 0.3,
+      "pr_auc_delta": -0.0027265400515841254
+    },
+    "freq_outlier": {
+      "pr_auc": 0.6831607474449223,
+      "f1": 0.6167449850942347,
+      "precision": 0.5327339385474861,
+      "recall": 0.7322135572885423,
+      "threshold": 0.5499999999999999,
+      "query": "шампунь",
+      "pr_auc_delta": 0.0
+    },
+    "position_noise": {
+      "pr_auc": 0.6831607474449223,
+      "f1": 0.6167449850942347,
+      "precision": 0.5327339385474861,
+      "recall": 0.7322135572885423,
+      "threshold": 0.5499999999999999,
+      "pr_auc_delta": 0.0,
+      "scores_identical": true
+    }
+  },
+  "mlflow_runs": {
+    "rule_past_order": "c2b39c9ffeab4763b4eac1f045347f39",
+    "catboost_stats": "98edfe059bc94f9198f26670a29c1bbe",
+    "catboost_semantic": "7029bae84874429b940d8a3e4b57ce6b",
+    "robustness_typos": "0c75e046908643c381494b345607b44f",
+    "robustness_freq_outlier": "412067dc30b64a2f8a497df42e8bb00e",
+    "robustness_position_noise": "fb7d74b612b742b8b2cd0fff744f0ef1"
+  },
+  "beats_rule": true
+}

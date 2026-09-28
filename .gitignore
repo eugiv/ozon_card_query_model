@@ -1,0 +1,13 @@
+.venv/
+.idea/
+mlruns/
+mlartifacts/
+mlflow.db
+catboost_info/
+__pycache__/
+**/__pycache__/
+.pytest_cache/
+data/
+.env
+*.cbm
+.DS_Store
