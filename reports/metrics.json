@@ -1,103 +1,440 @@
 {
+  "schema_version": 2,
+  "artifact_id": "2026-09-25-6e330758",
+  "evaluation_cutoff": "2026-09-25",
+  "source_max_date": "2026-09-25",
+  "window_days": 28,
+  "candidate_rule": {
+    "min_searches": 10,
+    "min_views": 3,
+    "cohort_uses_future": false
+  },
+  "historical_text_features": false,
+  "model_features": [
+    "log_freq",
+    "log_views",
+    "orders_past",
+    "conv_past",
+    "view_rate_past",
+    "order_rate_from_view_past",
+    "views_past",
+    "days_past",
+    "query_token_count"
+  ],
+  "params": {
+    "depth": 6,
+    "learning_rate": 0.05,
+    "iterations": 167
+  },
   "windows": {
-    "train": {
-      "feat_start": "2026-06-05",
-      "feat_end": "2026-07-02",
-      "label_start": "2026-07-03",
-      "label_end": "2026-07-30"
+    "block_0": {
+      "feat_start": "2026-08-01",
+      "feat_end": "2026-08-28",
+      "label_start": "2026-08-29",
+      "label_end": "2026-09-25"
     },
-    "test": {
-      "feat_start": "2026-07-31",
-      "feat_end": "2026-08-27",
-      "label_start": "2026-08-28",
-      "label_end": "2026-09-24"
+    "block_1": {
+      "feat_start": "2026-06-06",
+      "feat_end": "2026-07-03",
+      "label_start": "2026-07-04",
+      "label_end": "2026-07-31"
+    },
+    "block_2": {
+      "feat_start": "2026-04-11",
+      "feat_end": "2026-05-08",
+      "label_start": "2026-05-09",
+      "label_end": "2026-06-05"
+    },
+    "block_3": {
+      "feat_start": "2026-02-14",
+      "feat_end": "2026-03-13",
+      "label_start": "2026-03-14",
+      "label_end": "2026-04-10"
+    },
+    "block_4": {
+      "feat_start": "2025-12-20",
+      "feat_end": "2026-01-16",
+      "label_start": "2026-01-17",
+      "label_end": "2026-02-13"
+    },
+    "block_5": {
+      "feat_start": "2025-10-25",
+      "feat_end": "2025-11-21",
+      "label_start": "2025-11-22",
+      "label_end": "2025-12-19"
+    },
+    "block_6": {
+      "feat_start": "2025-08-30",
+      "feat_end": "2025-09-26",
+      "label_start": "2025-09-27",
+      "label_end": "2025-10-24"
     }
   },
   "counts": {
-    "train_pairs": 29060,
-    "train_positives": 7452,
-    "train_sku": 262,
-    "val_pairs": 6962,
-    "test_pairs": 28657,
-    "test_positives": 8335,
-    "test_sku": 278,
-    "brands": 53,
-    "cards_with_text": 1809
-  },
-  "params": {
-    "train_features": "2026-06-05..2026-07-02",
-    "train_labels": "2026-07-03..2026-07-30",
-    "test_features": "2026-07-31..2026-08-27",
-    "test_labels": "2026-08-28..2026-09-24",
-    "depth": 4,
-    "learning_rate": 0.08,
-    "iterations": 311,
-    "auto_class_weights": "Balanced",
-    "random_seed": 7,
-    "semantic": "tfidf_char_wb_3_5",
-    "val_pr_auc_stats": 0.692484,
-    "param_source": "https://catboost.ai/docs/en/concepts/parameter-tuning"
-  },
-  "results": {
-    "rule_past_order": {
-      "pr_auc": 0.4680789377056574,
-      "f1": 0.43644654344108785,
-      "precision": 0.6791687785098834,
-      "recall": 0.3215356928614277,
-      "threshold": 1.0,
-      "threshold_note": "orders_past > 0"
+    "train": {
+      "pairs": 119540,
+      "positives": 9856,
+      "sku": 847,
+      "future_exposed": 64287
     },
-    "catboost_stats": {
-      "pr_auc": 0.6858986839920069,
-      "f1": 0.613209080565639,
-      "precision": 0.5590792333530923,
-      "recall": 0.6789442111577685,
-      "threshold": 0.5499999999999999
+    "validation": {
+      "pairs": 49893,
+      "positives": 4055,
+      "sku": 1512,
+      "future_exposed": 24157
     },
-    "catboost_semantic": {
-      "pr_auc": 0.6831607474449223,
-      "f1": 0.6167449850942347,
-      "precision": 0.5327339385474861,
-      "recall": 0.7322135572885423,
-      "threshold": 0.5499999999999999
+    "test": {
+      "pairs": 38526,
+      "positives": 4060,
+      "sku": 518,
+      "future_exposed": 18533
+    },
+    "score": {
+      "pairs": 40400,
+      "sku": 380
     }
   },
-  "robustness": {
-    "typos": {
-      "pr_auc": 0.6804342073933382,
-      "f1": 0.6116189000774593,
-      "precision": 0.5368993653671804,
-      "recall": 0.710497900419916,
-      "threshold": 0.5499999999999999,
-      "share_changed": 0.3,
-      "pr_auc_delta": -0.0027265400515841254
+  "benchmark": {
+    "catboost_history": {
+      "score": {
+        "rows": 31693,
+        "positives": 3926,
+        "prevalence": 0.1238759347489982,
+        "roc_auc": 0.8759629495286452,
+        "pr_auc": 0.6364750523570173,
+        "f1": 0.5525759791971396,
+        "precision": 0.7633587786259542,
+        "recall": 0.43301069791136015,
+        "brier": 0.06811879190451389,
+        "log_loss": 0.24924145365988956,
+        "ece_10": 0.0046695149235596025,
+        "threshold": 0.5
+      },
+      "policy": {
+        "rows": 38526,
+        "positives": 4060,
+        "prevalence": 0.10538337745937808,
+        "keep": 23743,
+        "review": 12370,
+        "remove_candidate": 2413,
+        "automatic_coverage": 0.6789181332087422,
+        "review_share": 0.32108186679125783,
+        "keep_precision": 0.15381375563323926,
+        "keep_recall": 0.8995073891625616,
+        "remove_precision": 0.9627020306672193,
+        "negative_coverage": 0.06739975628155283,
+        "positive_removed": 90,
+        "positive_removed_share": 0.022167487684729065
+      },
+      "thresholds": {
+        "keep": 0.3,
+        "remove": 0.14,
+        "keep_precision_target": 0.6,
+        "remove_precision_target": 0.95,
+        "min_remove_searches": 100,
+        "min_remove_views": 3
+      }
     },
-    "freq_outlier": {
-      "pr_auc": 0.6831607474449223,
-      "f1": 0.6167449850942347,
-      "precision": 0.5327339385474861,
-      "recall": 0.7322135572885423,
-      "threshold": 0.5499999999999999,
-      "query": "шампунь",
-      "pr_auc_delta": 0.0
+    "baselines": {
+      "past_order": {
+        "rows": 31693,
+        "positives": 3926,
+        "prevalence": 0.1238759347489982,
+        "roc_auc": 0.736401262151253,
+        "pr_auc": 0.25162892625205496,
+        "f1": 0.42672109270743386,
+        "precision": 0.30840803358674684,
+        "recall": 0.6923076923076923,
+        "brier": 0.2304294323667687,
+        "log_loss": 8.305518590878824,
+        "ece_10": 0.23042943236676872,
+        "threshold": 0.5
+      },
+      "always_keep": {
+        "rows": 31693,
+        "positives": 3926,
+        "prevalence": 0.1238759347489982,
+        "roc_auc": 0.5,
+        "pr_auc": 0.1238759347489982,
+        "f1": 0.22044414497880344,
+        "precision": 0.1238759347489982,
+        "recall": 1.0,
+        "brier": 0.8761240652510018,
+        "log_loss": 31.57871213377136,
+        "ece_10": 0.8761240652510018,
+        "threshold": 0.5
+      },
+      "logistic": {
+        "rows": 31693,
+        "positives": 3926,
+        "prevalence": 0.1238759347489982,
+        "roc_auc": 0.8671262157307459,
+        "pr_auc": 0.6288216942895705,
+        "f1": 0.5200745383703201,
+        "precision": 0.776428932726353,
+        "recall": 0.39098318899643403,
+        "brier": 0.07020615352425319,
+        "log_loss": 0.25015332223689823,
+        "ece_10": 0.008846566463784658,
+        "threshold": 0.5
+      },
+      "past_order_full_policy": {
+        "rows": 38526,
+        "positives": 4060,
+        "prevalence": 0.10538337745937808,
+        "keep": 8893,
+        "review": 0,
+        "remove_candidate": 29633,
+        "automatic_coverage": 1.0,
+        "review_share": 0.0,
+        "keep_precision": 0.30653322838187336,
+        "keep_recall": 0.6714285714285714,
+        "remove_precision": 0.9549826207268923,
+        "negative_coverage": 0.8210700400394592,
+        "positive_removed": 1334,
+        "positive_removed_share": 0.32857142857142857
+      },
+      "always_keep_full_policy": {
+        "rows": 38526,
+        "positives": 4060,
+        "prevalence": 0.10538337745937808,
+        "keep": 38526,
+        "review": 0,
+        "remove_candidate": 0,
+        "automatic_coverage": 1.0,
+        "review_share": 0.0,
+        "keep_precision": 0.10538337745937808,
+        "keep_recall": 1.0,
+        "remove_precision": null,
+        "negative_coverage": 0.0,
+        "positive_removed": 0,
+        "positive_removed_share": 0.0
+      }
     },
-    "position_noise": {
-      "pr_auc": 0.6831607474449223,
-      "f1": 0.6167449850942347,
-      "precision": 0.5327339385474861,
-      "recall": 0.7322135572885423,
-      "threshold": 0.5499999999999999,
-      "pr_auc_delta": 0.0,
-      "scores_identical": true
+    "bootstrap_by_sku": {
+      "rows": {
+        "value": 38526.0,
+        "low": 35209.35,
+        "high": 41922.424999999996
+      },
+      "positives": {
+        "value": 4060.0,
+        "low": 3317.875,
+        "high": 4836.275
+      },
+      "prevalence": {
+        "value": 0.10538337745937808,
+        "low": 0.09032118457096075,
+        "high": 0.11896199724916348
+      },
+      "keep": {
+        "value": 23743.0,
+        "low": 21021.175,
+        "high": 26649.85
+      },
+      "review": {
+        "value": 12370.0,
+        "low": 11207.325,
+        "high": 13582.175
+      },
+      "remove_candidate": {
+        "value": 2413.0,
+        "low": 2125.375,
+        "high": 2786.6749999999997
+      },
+      "automatic_coverage": {
+        "value": 0.6789181332087422,
+        "low": 0.6458713228983151,
+        "high": 0.7076243127420134
+      },
+      "review_share": {
+        "value": 0.32108186679125783,
+        "low": 0.29237568725798657,
+        "high": 0.35412867710168494
+      },
+      "keep_precision": {
+        "value": 0.15381375563323926,
+        "low": 0.1346241813199352,
+        "high": 0.17015266472041854
+      },
+      "keep_recall": {
+        "value": 0.8995073891625616,
+        "low": 0.8780789241610489,
+        "high": 0.9165963834366992
+      },
+      "remove_precision": {
+        "value": 0.9627020306672193,
+        "low": 0.9541943615482005,
+        "high": 0.970350624211313
+      },
+      "negative_coverage": {
+        "value": 0.06739975628155283,
+        "low": 0.061133265323687194,
+        "high": 0.07395300403940647
+      },
+      "positive_removed": {
+        "value": 90.0,
+        "low": 70.0,
+        "high": 113.0
+      },
+      "positive_removed_share": {
+        "value": 0.022167487684729065,
+        "low": 0.016905597383728946,
+        "high": 0.02818653333057176
+      },
+      "pr_auc": {
+        "value": 0.6364750523570173,
+        "low": 0.5977906327881093,
+        "high": 0.6697376033460843
+      },
+      "brier": {
+        "value": 0.06811879190451389,
+        "low": 0.061775439950373365,
+        "high": 0.07479833187307953
+      }
+    },
+    "rolling_backtests": [
+      {
+        "score": {
+          "rows": 36871,
+          "positives": 3099,
+          "prevalence": 0.08404979523202517,
+          "roc_auc": 0.8747018806561795,
+          "pr_auc": 0.5440151069403631,
+          "f1": 0.4827586206896552,
+          "precision": 0.7178343949044586,
+          "recall": 0.3636656986124556,
+          "brier": 0.052641610458146054,
+          "log_loss": 0.19626077464130598,
+          "ece_10": 0.0075612625525423305,
+          "threshold": 0.5
+        },
+        "policy": {
+          "rows": 48717,
+          "positives": 3218,
+          "prevalence": 0.06605497054416323,
+          "keep": 27886,
+          "review": 18006,
+          "remove_candidate": 2825,
+          "automatic_coverage": 0.6303959603423857,
+          "review_share": 0.3696040396576144,
+          "keep_precision": 0.10069568959334434,
+          "keep_recall": 0.872591671845867,
+          "remove_precision": 0.95929203539823,
+          "negative_coverage": 0.059561748609859556,
+          "positive_removed": 115,
+          "positive_removed_share": 0.035736482287134864
+        },
+        "thresholds": {
+          "keep": 0.32,
+          "remove": 0.12,
+          "keep_precision_target": 0.6,
+          "remove_precision_target": 0.95,
+          "min_remove_searches": 100,
+          "min_remove_views": 3
+        },
+        "counts": {
+          "train": 20955,
+          "validation": 49868,
+          "test": 48717,
+          "model_test": 36871
+        },
+        "test_block": 2,
+        "validation_block": 3,
+        "train_blocks": [
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "score": {
+          "rows": 39741,
+          "positives": 3986,
+          "prevalence": 0.10029943886666164,
+          "roc_auc": 0.8682109028923285,
+          "pr_auc": 0.5649304546859942,
+          "f1": 0.44585295182904744,
+          "precision": 0.8014322916666666,
+          "recall": 0.3088309081786252,
+          "brier": 0.061915409892293494,
+          "log_loss": 0.22092664275292712,
+          "ece_10": 0.016281950581415384,
+          "threshold": 0.5
+        },
+        "policy": {
+          "rows": 49893,
+          "positives": 4055,
+          "prevalence": 0.08127392620207244,
+          "keep": 29995,
+          "review": 16927,
+          "remove_candidate": 2971,
+          "automatic_coverage": 0.6607339706972922,
+          "review_share": 0.3392660293027078,
+          "keep_precision": 0.11908651441906984,
+          "keep_recall": 0.8808877928483354,
+          "remove_precision": 0.9444631437226523,
+          "negative_coverage": 0.06121558532222174,
+          "positive_removed": 165,
+          "positive_removed_share": 0.040690505548705305
+        },
+        "thresholds": {
+          "keep": 0.31,
+          "remove": 0.14,
+          "keep_precision_target": 0.6,
+          "remove_precision_target": 0.95,
+          "min_remove_searches": 100,
+          "min_remove_views": 3
+        },
+        "counts": {
+          "train": 70823,
+          "validation": 48717,
+          "test": 49893,
+          "model_test": 39741
+        },
+        "test_block": 1,
+        "validation_block": 2,
+        "train_blocks": [
+          3,
+          4,
+          5,
+          6
+        ]
+      }
+    ]
+  },
+  "deployment": {
+    "training_blocks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "calibration_block": 0,
+    "thresholds": {
+      "keep": 0.29000000000000004,
+      "remove": 0.17,
+      "keep_precision_target": 0.6,
+      "remove_precision_target": 0.95,
+      "min_remove_searches": 100,
+      "min_remove_views": 3
+    },
+    "score_window": {
+      "feat_start": "2026-08-29",
+      "feat_end": "2026-09-25"
     }
   },
-  "mlflow_runs": {
-    "rule_past_order": "c2b39c9ffeab4763b4eac1f045347f39",
-    "catboost_stats": "98edfe059bc94f9198f26670a29c1bbe",
-    "catboost_semantic": "7029bae84874429b940d8a3e4b57ce6b",
-    "robustness_typos": "0c75e046908643c381494b345607b44f",
-    "robustness_freq_outlier": "412067dc30b64a2f8a497df42e8bb00e",
-    "robustness_position_noise": "fb7d74b612b742b8b2cd0fff744f0ef1"
+  "recommendations": {
+    "keep": 25843,
+    "remove_candidate": 2785,
+    "review": 11772
   },
-  "beats_rule": true
+  "limitations": [
+    "Модель прогнозирует будущий заказ, а не причинный эффект текста карточки.",
+    "Исторические снимки текста отсутствуют, поэтому текстовые признаки отключены.",
+    "Кандидат на исключение требует ручной проверки и не применяется автоматически."
+  ],
+  "mlflow_run_id": "e1b699a0bedb44f3be507aba01e77b09"
 }

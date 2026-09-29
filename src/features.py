@@ -10,27 +10,41 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import normalize
 
 _TOKEN = re.compile(r"[0-9a-zа-я]+", re.IGNORECASE)
-_STOP = {"для", "при", "над", "под", "без", "или", "это", "как", "что", "уже", "еще", "про"}
+_STOP = {
+    "для",
+    "при",
+    "над",
+    "под",
+    "без",
+    "или",
+    "это",
+    "как",
+    "что",
+    "уже",
+    "еще",
+    "про",
+}
 
-STATS_FEATURES = [
+MODEL_FEATURES = [
     "log_freq",
+    "log_views",
     "orders_past",
     "conv_past",
+    "view_rate_past",
+    "order_rate_from_view_past",
     "views_past",
     "days_past",
-    "brand_hit",
-    "word_overlap",
     "query_token_count",
 ]
-SEMANTIC_FEATURES = STATS_FEATURES + ["semantic_cosine"]
+# Старые имена оставлены для совместимости с локальными отчётами.
+STATS_FEATURES = MODEL_FEATURES
+SEMANTIC_FEATURES = MODEL_FEATURES + ["brand_hit", "word_overlap", "semantic_cosine"]
 
 
 def tokens(text: str) -> list[str]:
     raw = str(text or "").lower().replace("ё", "е")
     return [
-        item
-        for item in _TOKEN.findall(raw)
-        if len(item) >= 2 and item not in _STOP
+        item for item in _TOKEN.findall(raw) if len(item) >= 2 and item not in _STOP
     ]
 
 
@@ -96,18 +110,38 @@ class SemanticEncoder:
 
 def attach_features(
     frame: pd.DataFrame,
-    cards: pd.DataFrame,
-    brands: list[str],
-    encoder: SemanticEncoder | None,
+    cards: pd.DataFrame | None = None,
+    brands: list[str] | None = None,
+    encoder: SemanticEncoder | None = None,
 ) -> pd.DataFrame:
-    data = frame.merge(cards, on="sku", how="left")
+    if cards is None:
+        data = frame.copy()
+        data["card_text"] = ""
+    else:
+        data = frame.merge(cards, on="sku", how="left")
     data["card_text"] = data["card_text"].fillna("")
     data["query"] = data["query"].fillna("").astype(str)
     data["log_freq"] = np.log1p(data["freq_past"].clip(lower=0))
+    data["log_views"] = np.log1p(data["views_past"].clip(lower=0))
     freq = data["freq_past"].to_numpy(dtype=float)
+    views = data["views_past"].to_numpy(dtype=float)
     orders = data["orders_past"].to_numpy(dtype=float)
-    data["conv_past"] = np.divide(orders, freq, out=np.zeros_like(orders), where=freq > 0)
-    data["brand_hit"] = [_brand_hit(query, brands) for query in data["query"]]
+    data["conv_past"] = np.divide(
+        orders, freq, out=np.zeros_like(orders), where=freq > 0
+    )
+    data["view_rate_past"] = np.divide(
+        views,
+        freq,
+        out=np.zeros_like(views),
+        where=freq > 0,
+    )
+    data["order_rate_from_view_past"] = np.divide(
+        orders,
+        views,
+        out=np.zeros_like(orders),
+        where=views > 0,
+    )
+    data["brand_hit"] = [_brand_hit(query, brands or []) for query in data["query"]]
     data["word_overlap"] = [
         _overlap(query, card)
         for query, card in zip(data["query"], data["card_text"], strict=True)

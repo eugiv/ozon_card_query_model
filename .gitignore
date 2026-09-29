@@ -10,4 +10,12 @@ __pycache__/
 data/
 .env
 *.cbm
+*.joblib
+reports/runs/
+reports/latest.json
+reports/recommendations.csv
+reports/recommendations.xlsx
+reports/test_predictions.csv
+reports/model_curves.csv
+reports/*_features.txt
 .DS_Store
