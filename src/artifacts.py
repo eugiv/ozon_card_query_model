@@ -46,14 +46,10 @@ def _presentation_frame(recommendations: pd.DataFrame) -> pd.DataFrame:
     available = [column for column in columns if column in recommendations.columns]
     result = recommendations[available].rename(columns=columns).copy()
     if "Решение" in result:
-        result["Решение"] = (
-            result["Решение"].map(DECISION_LABELS).fillna(result["Решение"])
-        )
+        result["Решение"] = result["Решение"].map(DECISION_LABELS).fillna(result["Решение"])
     if "Источник решения" in result:
         result["Источник решения"] = (
-            result["Источник решения"]
-            .map(SOURCE_LABELS)
-            .fillna(result["Источник решения"])
+            result["Источник решения"].map(SOURCE_LABELS).fillna(result["Источник решения"])
         )
     if "Оценка будущего заказа" in result:
         result["Оценка будущего заказа"] = result["Оценка будущего заказа"].round(4)

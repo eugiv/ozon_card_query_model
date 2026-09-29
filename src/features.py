@@ -10,20 +10,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import normalize
 
 _TOKEN = re.compile(r"[0-9a-zа-я]+", re.IGNORECASE)
-_STOP = {
-    "для",
-    "при",
-    "над",
-    "под",
-    "без",
-    "или",
-    "это",
-    "как",
-    "что",
-    "уже",
-    "еще",
-    "про",
-}
+_STOP = {"для", "при", "над", "под", "без", "или", "это", "как", "что", "уже", "еще", "про"}
 
 MODEL_FEATURES = [
     "log_freq",
@@ -44,7 +31,9 @@ SEMANTIC_FEATURES = MODEL_FEATURES + ["brand_hit", "word_overlap", "semantic_cos
 def tokens(text: str) -> list[str]:
     raw = str(text or "").lower().replace("ё", "е")
     return [
-        item for item in _TOKEN.findall(raw) if len(item) >= 2 and item not in _STOP
+        item
+        for item in _TOKEN.findall(raw)
+        if len(item) >= 2 and item not in _STOP
     ]
 
 
@@ -126,9 +115,7 @@ def attach_features(
     freq = data["freq_past"].to_numpy(dtype=float)
     views = data["views_past"].to_numpy(dtype=float)
     orders = data["orders_past"].to_numpy(dtype=float)
-    data["conv_past"] = np.divide(
-        orders, freq, out=np.zeros_like(orders), where=freq > 0
-    )
+    data["conv_past"] = np.divide(orders, freq, out=np.zeros_like(orders), where=freq > 0)
     data["view_rate_past"] = np.divide(
         views,
         freq,

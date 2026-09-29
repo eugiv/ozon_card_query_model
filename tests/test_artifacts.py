@@ -50,7 +50,5 @@ def test_artifacts_reject_mismatched_counts(tmp_path):
             summary={"recommendations": {"keep": 2}},
             recommendations=_recommendations(),
             test_predictions=_recommendations(),
-            curves=pd.DataFrame(
-                {"curve": ["roc"], "model_name": ["m"], "x": [0], "y": [1]}
-            ),
+            curves=pd.DataFrame({"curve": ["roc"], "model_name": ["m"], "x": [0], "y": [1]}),
         )
