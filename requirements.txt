@@ -1,9 +1,13 @@
 catboost>=1.2.7
-mlflow>=2.16
 scikit-learn>=1.4
+scipy>=1.11
 pandas>=2.2
 numpy>=1.26
 clickhouse-connect>=0.7
 python-dotenv>=1.0
-openpyxl>=3.1
+sentence-transformers>=3.4,<6
+torch>=2.6,<3
+python-pptx>=1.0.2
+Pillow>=10.0
+python-docx>=1.1,<2
 pytest>=8.0
