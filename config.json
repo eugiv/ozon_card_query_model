@@ -1,0 +1,42 @@
+{
+  "inputs": {
+    "facts": "data/clusters_full_20261011/facts.csv",
+    "dictionary": "data/clusters_full_20261011/dictionary.csv",
+    "embeddings": "data/e5_small_expanded.npz",
+    "products": "data/product_text_full_20261007/metadata.csv"
+  },
+  "outputs": {
+    "baseline": "reports/stage3_20261011_baseline",
+    "adapter": "reports/stage3_20261011_adapter",
+    "graph": "reports/stage3_graph",
+    "evaluation": "reports/stage3_evaluation",
+    "ablation": "reports/stage3_ablation",
+    "final_adapter": "reports/stage3_20261011_final_adapter",
+    "final_graph": "reports/stage3_final_graph",
+    "release": "reports/stage3_release"
+  },
+  "method": {
+    "dictionary_as_of": "2026-06-26",
+    "first_decision": "2026-06-26",
+    "validation_decision": "2026-09-04",
+    "test_decision": "2026-09-18",
+    "window_days": 14,
+    "max_views": 5,
+    "per_source": 150,
+    "max_seeds": 32,
+    "iterations": [100, 300, 600],
+    "mask_rounds": 2,
+    "training_stride_days": 7,
+    "seed": 7
+  },
+  "neural": {
+    "adapter_epochs": 15,
+    "adapter_batch_size": 128,
+    "device": "cpu",
+    "graph_epochs": 30,
+    "graph_dimensions": 32,
+    "graph_layers": 2
+  },
+  "as_of": "2026-10-11T01:28:00Z",
+  "top_k": 10
+}
