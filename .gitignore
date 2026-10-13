@@ -43,6 +43,8 @@ data/
 !/reports/*.md
 !/reports/analysis_slides_data.json
 !/reports/experiment_summary.json
+!/reports/notebook_ranking_pairs.csv
+!/reports/notebook_ranking_manifest.json
 !/reports/diploma_presentation.pptx
 !/reports/explanatory_note.docx
 !/reports/project_guide.docx
