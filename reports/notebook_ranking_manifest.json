@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "contents": "all future selling pairs, including targets missing from the candidate pool",
+  "privacy": "ordinal product/query aliases; no original IDs, text or lookup table",
+  "evaluation": "saved ranking evaluation, not retraining or a sales uplift experiment",
+  "rank_order": "score descending, original normquery ascending; ranks computed before anonymization",
+  "missing_rank": "target absent from the candidate pool; retained in metric denominator",
+  "weights": {
+    "baseline": {
+      "pretrained_embeddings": 0.5,
+      "co_sales": 0.5
+    },
+    "system": {
+      "pretrained_embeddings": 0.25,
+      "co_sales": 0.25,
+      "semantic_adapter": 0.25,
+      "lightgcn": 0.25
+    }
+  },
+  "rrf_offset": 60,
+  "top_k": 10,
+  "pairs_sha256": "1ab46715fa2ef83d802b1b104943af0fb841462b9072eb34d136884b95301a57",
+  "source_sha256": {
+    "test": {
+      "candidate_pairs": 166291,
+      "candidates_sha256": "40d8d7cb5ea41200faa6046f7984254541637ae9122a6c5c51056f5996c13e00",
+      "positives_sha256": "f4d616ca1ddcca06f0f719f287f4924b254266998baf5a4701a0de7e90be86a7"
+    },
+    "new_days": {
+      "candidate_pairs": 215719,
+      "candidates_sha256": "d3187c8c367384216e982955c49c1a63a8f9996590be588f17f4b4b95660af98",
+      "positives_sha256": "8f73155c31861586d9ae122dd6e3ae9179806fdd12980b8f6db18debb7704832"
+    }
+  },
+  "ablation_manifest_sha256": "dd2729e4956f42848e22c32b4b529710109a689b9e2b6d60fd3cff7a87e560ac",
+  "experiment_summary_sha256": "cf25d8891a74b223043e3787bfe3bbe26440c71914dc28ac05edf05fd7bf3056"
+}

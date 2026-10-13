@@ -78,7 +78,7 @@ def test_format_fields_and_editable_links(note):
     assert section.footer._element.xpath('.//w:fldSimple[@w:instr="PAGE"]')
     urls = {r.target_ref for r in note.part.rels.values()
             if r.reltype == RELATIONSHIP_TYPE.HYPERLINK and r.is_external}
-    assert "https://github.com/eugiv/ozon_card_query_model" in urls
+    assert "https://github.com/MP-Trade/ozon_card_query_model" in urls
     assert "https://arxiv.org/abs/1706.09516" in urls
     assert "https://arxiv.org/abs/2002.02126" in urls
     assert "https://arxiv.org/abs/1205.2618" in urls
@@ -119,7 +119,7 @@ def test_metrics_and_honest_status():
                      "384 → 128 → 384", "InfoNCE", "BPR", "37 245", "2 504",
                      "600 итераций", "CatBoost", "обученный альтернативный ранжировщик",
                      "Фото и OCR в текущем решении не использовались",
-                     "Публичная копия не содержит .env, приватных данных и весов"):
+                     "Публикация текущих изменений и доступность ссылки не подтверждены"):
         assert fragment in text
     assert "нет" in text.split("измеренного бизнес-прироста", 1)[1].split(".", 1)[0]
     for retired in ("full_history_20261007.md", "experiment_summary.json", "project_map",
@@ -263,11 +263,6 @@ def test_complete_personal_guide_and_worked_metrics(tmp_path):
     assert len(guide.element.body.xpath(".//w:bookmarkStart")) == sum(
         kind.startswith("heading_") for kind, value in blocks[1:]
     )
-    urls = {r.target_ref for r in guide.part.rels.values()
-            if r.reltype == RELATIONSHIP_TYPE.HYPERLINK}
-    assert not any(url.startswith("file:") for url in urls)
-    assert f"{note_module.REPOSITORY}/blob/main/reports/experiment_summary.json" in urls
-    assert f"{note_module.REPOSITORY}/blob/main/docs/explanatory_note.md" in urls
     snapshot = json.loads((DEFAULT_SOURCE.parents[1] / "reports/experiment_summary.json").read_text())
     control = snapshot["ablation"]["test"]["e5_co_sales"]["recall@10"]
     hybrid = snapshot["test"]["models"]["learned_fusion"]["recall@10"]

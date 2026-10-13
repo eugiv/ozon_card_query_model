@@ -43,7 +43,9 @@ data/
 !/reports/*.md
 !/reports/analysis_slides_data.json
 !/reports/experiment_summary.json
-!/reports/diploma_task_definition_3slides_v5.pptx
+!/reports/notebook_ranking_pairs.csv
+!/reports/notebook_ranking_manifest.json
+!/reports/diploma_presentation.pptx
 !/reports/explanatory_note.docx
 !/reports/project_guide.docx
 *.bak

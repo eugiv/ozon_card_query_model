@@ -29,10 +29,10 @@ from pptx.enum.text import MSO_AUTO_SIZE, PP_ALIGN
 from pptx.util import Inches, Pt
 
 ROOT = Path(__file__).resolve().parents[1]
-DECK = ROOT / "reports/diploma_task_definition_3slides_v5.pptx"
+DECK = ROOT / "reports/diploma_presentation.pptx"
 SUMMARY = ROOT / "reports/experiment_summary.json"
 ANALYSIS = ROOT / "reports/analysis_slides_data.json"
-REPOSITORY = "https://github.com/eugiv/ozon_card_query_model"
+REPOSITORY = "https://github.com/MP-Trade/ozon_card_query_model"
 WHITE, BLACK, MINT = "FFFFFF", "142B35", "44CCA0"
 PURPLE, BLUE, PINK = "7961C9", "397DBA", "DF7185"
 LIGHT, GREY, DARK_MINT = "F0F5F5", "586E77", "087557"
@@ -940,7 +940,6 @@ def build(summary, analysis):
     p.core_properties.title = "Рекомендательная система поисковых кластеров Ozon"
     p.core_properties.subject = "Постановка задачи, анализ, методика, результаты, выводы и источники"
     p.core_properties.author = ""
-    p.core_properties.last_modified_by = ""
     apply_theme(p)
     canvases = [builder(p, summary, analysis) for builder in BUILDERS]
     validate(canvases)
@@ -992,11 +991,7 @@ def add_link(paragraph, label: str, target: str, base_path=None, anchors=None) -
         hyperlink.set(qn("w:anchor"), anchors[target[1:]])
     else:
         if base_path is not None and not re.match(r"[a-zA-Z][\w+.-]*:", target):
-            resolved_target = (base_path / target).resolve()
-            if resolved_target.is_relative_to(ROOT):
-                target = f"{REPOSITORY}/blob/main/{resolved_target.relative_to(ROOT).as_posix()}"
-            else:
-                target = resolved_target.as_uri()
+            target = (base_path / target).resolve().as_uri()
         hyperlink.set(qn("r:id"), paragraph.part.relate_to(
             target, RELATIONSHIP_TYPE.HYPERLINK, is_external=True,
         ))
@@ -1142,7 +1137,6 @@ def word_document(guide=False):
         field.set(qn("w:instr"), instruction)
         footer._p.append(field)
     document.core_properties.author = "[ФИО автора]"
-    document.core_properties.last_modified_by = ""
     document.core_properties.created = document.core_properties.modified = datetime(2026, 10, 11, tzinfo=timezone.utc)
     return document
 
