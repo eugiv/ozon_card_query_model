@@ -19,6 +19,7 @@ from cluster_data import (
     sha256,
     write_json,
 )
+from training_validation import TrainingValidation, nonnegative_finite
 
 
 def _positive_integer(value, name, minimum=1):
@@ -149,33 +150,44 @@ def denominator_mask(indices, positive_indices, selling_skus, catalog):
     return mask
 
 
-def _new_adapter(device="cpu"):
+def _new_adapter(device="cpu", *, hidden_dim=128, residual_scale=0.1):
+    _positive_integer(hidden_dim, "hidden_dim")
+    residual_scale = nonnegative_finite(residual_scale, "residual_scale")
     import torch
 
     class ResidualAdapter(torch.nn.Module):
         def __init__(self):
             super().__init__()
+            self.hidden_dim = hidden_dim
+            self.residual_scale = residual_scale
             self.mlp = torch.nn.Sequential(
-                torch.nn.Linear(384, 128), torch.nn.ReLU(), torch.nn.Linear(128, 384),
+                torch.nn.Linear(384, hidden_dim), torch.nn.ReLU(), torch.nn.Linear(hidden_dim, 384),
             )
             torch.nn.init.zeros_(self.mlp[2].weight)
             torch.nn.init.zeros_(self.mlp[2].bias)
 
         def forward(self, x):
-            return torch.nn.functional.normalize(x + 0.1 * self.mlp(x), dim=-1)
+            return torch.nn.functional.normalize(x + self.residual_scale * self.mlp(x), dim=-1)
 
     return ResidualAdapter().to(device)
 
 
 def fit_adapter(history, catalog, vectors, epochs, batch_size=128, seed=7, device="cpu",
-                *, train_end=None):
+                *, train_end=None, hidden_dim=128, residual_scale=0.1,
+                validation_callback=None, patience=None, min_delta=0.0, selection_metric=None):
     """Symmetric masked in-batch InfoNCE; обучается только MLP, E5-векторы заморожены.
 
     Для daily history передайте train_end (или одноимённый attrs); история без date
     считается уже отфильтрованной. Нет co-sale не означает подтверждённый негатив.
+    Optional callback(model) -> finite float максимизируется на эпохах 0..N;
+    возвращаются лучшие веса. Patience считает эпохи без роста > min_delta,
+    None отключает остановку. Без callback возвращается последняя эпоха.
     """
     _positive_integer(epochs, "epochs")
     _positive_integer(batch_size, "batch_size", 2)
+    _positive_integer(hidden_dim, "hidden_dim")
+    residual_scale = nonnegative_finite(residual_scale, "residual_scale")
+    validation = TrainingValidation(validation_callback, patience, min_delta, selection_metric)
     pairs, support, audit = build_training_pairs(history, catalog, seed, train_end=train_end)
     matrix = _vectors(vectors)
     if len(matrix) != len(catalog):
@@ -194,13 +206,19 @@ def fit_adapter(history, catalog, vectors, epochs, batch_size=128, seed=7, devic
         torch.use_deterministic_algorithms(True)
         with torch.random.fork_rng(devices=[]):
             torch.manual_seed(seed)
-            model = _new_adapter(device)
+            model = _new_adapter(device, hidden_dim=hidden_dim, residual_scale=residual_scale)
+            model.training_cutoff = audit["training_cutoff"]
             base = torch.from_numpy(matrix).to(device).detach()
             optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
             endpoints = pairs[["left", "right"]].to_numpy(dtype=np.int64)
             pair_weights = pairs["weight"].to_numpy(dtype=np.float32)
             pair_skus = pairs["sku"].tolist()
-            for _ in range(epochs):
+
+            def snapshot():
+                return {key: value.detach().cpu().clone() for key, value in model.state_dict().items()}
+
+            validation.evaluate(model, 0, snapshot)
+            for epoch in range(1, epochs + 1):
                 order = rng.permutation(len(pairs))
                 batches = [order[start:start + batch_size] for start in range(0, len(order), batch_size)]
                 if len(batches) > 1 and len(batches[-1]) == 1:
@@ -248,12 +266,16 @@ def fit_adapter(history, catalog, vectors, epochs, batch_size=128, seed=7, devic
                     raise ValueError("В batch нет unknown comparison: contrastive обучение невозможно")
                 optimizer_steps += epoch_steps
                 losses.append(epoch_loss / audit["train_skus"])
+                if validation.evaluate(model, epoch, snapshot):
+                    break
+            validation.restore(model.load_state_dict)
     finally:
         torch.use_deterministic_algorithms(deterministic, warn_only=warn_only)
     model.eval()
     model.training_cutoff = audit["training_cutoff"]
     audit.update({
-        "architecture": "normalize(x + 0.1 * MLP(x)); 384->128->384; ReLU",
+        "architecture": f"normalize(x + {residual_scale} * MLP(x)); 384->{hidden_dim}->384; ReLU",
+        "hidden_dim": hidden_dim, "residual_scale": residual_scale,
         "transformer_fine_tuned": False, "frozen_base_vectors": True,
         "epochs": epochs, "batch_size": batch_size, "seed": seed, "device": str(device),
         "torch_version": str(torch.__version__), "temperature": 0.1, "learning_rate": 1e-3,
@@ -264,6 +286,7 @@ def fit_adapter(history, catalog, vectors, epochs, batch_size=128, seed=7, devic
         "singleton_batch_policy": "merge final singleton into previous batch (at most batch_size + 1)",
         "masked_denominator_entries": masked_candidates, "weak_comparison_entries": weak_comparisons,
         "quality_claim": "training objective only; relevance improvement is not established",
+        **validation.audit(len(losses), epochs),
     })
     return model, audit
 
@@ -294,7 +317,8 @@ def save_adapter(model, path):
     state = {name: value.detach().cpu() for name, value in model.state_dict().items()}
     if any(not torch.isfinite(value).all() for value in state.values()):
         raise ValueError("Нельзя сохранить неконечные веса")
-    payload = {"format_version": 1, "dimension": 384, "hidden": 128, "residual_scale": 0.1,
+    payload = {"format_version": 1, "dimension": 384, "hidden": model.hidden_dim,
+               "residual_scale": model.residual_scale,
                "training_cutoff": getattr(model, "training_cutoff", None), "state_dict": state}
     with Path(path).open("xb") as stream:
         torch.save(payload, stream)
@@ -305,14 +329,16 @@ def load_adapter(path, device="cpu"):
     import torch
 
     payload = torch.load(Path(path), map_location="cpu", weights_only=True)
-    expected = {"format_version": 1, "dimension": 384, "hidden": 128, "residual_scale": 0.1}
+    expected = {"format_version": 1, "dimension": 384}
     if not isinstance(payload, dict) or any(payload.get(key) != value for key, value in expected.items()):
         raise ValueError("Неизвестный формат residual adapter")
+    _positive_integer(payload.get("hidden"), "hidden_dim")
+    residual_scale = nonnegative_finite(payload.get("residual_scale"), "residual_scale")
     state = payload.get("state_dict")
     if (not isinstance(state, dict) or any(not isinstance(value, torch.Tensor)
             or not torch.isfinite(value).all() for value in state.values())):
         raise ValueError("Некорректные веса адаптера")
-    model = _new_adapter()
+    model = _new_adapter(hidden_dim=payload["hidden"], residual_scale=residual_scale)
     model.load_state_dict(state, strict=True)
     model.training_cutoff = payload.get("training_cutoff")
     return model.to(device).eval()

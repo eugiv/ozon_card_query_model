@@ -309,3 +309,141 @@ def test_invalid_vectors_and_no_contrastive_signal_fail_honestly():
         fit_adapter(history.loc[history["sku"].eq("singleton")], catalog, vectors, 1)
     with pytest.raises(ValueError, match="comparison"):
         fit_adapter(history.loc[history["sku"].eq("s1")], catalog, vectors, 1)
+
+
+@pytest.mark.parametrize("best_epoch", [0, 1])
+def test_validation_restores_best_weights_including_epoch_zero(best_epoch):
+    history, catalog, vectors = tiny_data()
+    snapshots, outputs = [], []
+
+    def validate(model):
+        assert not model.training and not torch.is_grad_enabled()
+        snapshots.append({key: value.detach().clone() for key, value in model.state_dict().items()})
+        outputs.append(apply_adapter(model, vectors))
+        return 1.0 if len(snapshots) - 1 == best_epoch else 0.0
+
+    model, audit = fit_adapter(history, catalog, vectors, epochs=3,
+                               validation_callback=validate, selection_metric="Recall@5")
+    assert audit["best_epoch"] == best_epoch
+    assert audit["best_validation_score"] == 1.0
+    assert audit["validation_per_epoch"] == [float(epoch == best_epoch) for epoch in range(4)]
+    assert audit["epochs_completed"] == audit["optimizer_steps"] == 3
+    assert not audit["stopped_early"] and audit["selection_metric"] == "Recall@5"
+    for key, value in model.state_dict().items():
+        torch.testing.assert_close(value, snapshots[best_epoch][key], rtol=0, atol=0)
+    assert any(not torch.equal(snapshots[best_epoch][key], snapshots[-1][key]) for key in snapshots[0])
+    np.testing.assert_array_equal(apply_adapter(model, vectors), outputs[best_epoch])
+
+
+@pytest.mark.parametrize("scores,min_delta,best_epoch", [
+    ([0.5, 0.5, 0.5], 0.0, 0),
+    ([0.0, 0.5, 0.5, 0.75, 0.75, 0.75], 0.0, 3),
+    ([0.0, 0.0625, 0.125], 0.125, 2),
+])
+def test_validation_plateau_stops_and_counts_actual_work(scores, min_delta, best_epoch):
+    history, catalog, vectors = tiny_data()
+    values = iter(scores)
+    _, audit = fit_adapter(history, catalog, vectors, epochs=10,
+                           validation_callback=lambda model: next(values), patience=2, min_delta=min_delta)
+    completed = len(scores) - 1
+    assert audit["validation_per_epoch"] == scores
+    assert audit["epochs_completed"] == audit["optimizer_steps"] == completed
+    assert len(audit["loss_per_epoch"]) == completed
+    assert audit["best_epoch"] == best_epoch and audit["best_validation_score"] == max(scores)
+    assert audit["stopped_early"] and audit["epochs"] == 10
+
+
+def test_validation_default_preserves_training_and_final_epoch_selection():
+    history, catalog, vectors = tiny_data()
+    model, audit = fit_adapter(history, catalog, vectors, 3)
+    explicit, explicit_audit = fit_adapter(history, catalog, vectors, 3, hidden_dim=128, residual_scale=0.1,
+                                          validation_callback=None, patience=None, min_delta=0.0)
+    values = iter([0.0, 0.25, 0.5, 0.75])
+    selected, selected_audit = fit_adapter(history, catalog, vectors, 3,
+                                          validation_callback=lambda current: next(values))
+    assert audit == explicit_audit
+    assert audit["validation_per_epoch"] == [] and audit["selection_metric"] is None
+    assert audit["best_epoch"] is audit["best_validation_score"] is None
+    assert audit["epochs_completed"] == 3 and not audit["stopped_early"]
+    assert selected_audit["loss_per_epoch"] == audit["loss_per_epoch"]
+    assert selected_audit["best_epoch"] == 3
+    for candidate in [explicit, selected]:
+        for key, value in model.state_dict().items():
+            torch.testing.assert_close(value, candidate.state_dict()[key], rtol=0, atol=0)
+
+
+@pytest.mark.parametrize("options", [
+    {"hidden_dim": 0}, {"hidden_dim": True}, {"hidden_dim": 1.5},
+    {"residual_scale": -0.1}, {"residual_scale": float("nan")},
+    {"residual_scale": float("inf")}, {"residual_scale": True},
+    {"validation_callback": 42}, {"patience": 0}, {"patience": 2}, {"min_delta": -1},
+])
+def test_invalid_sensitivity_and_validation_parameters_rejected(options):
+    history, catalog, vectors = tiny_data()
+    with pytest.raises(ValueError):
+        fit_adapter(history, catalog, vectors, 1, **options)
+
+
+@pytest.mark.parametrize("score", [float("nan"), float("inf"), None, True, "0.5"])
+def test_invalid_validation_metric_rejected(score):
+    history, catalog, vectors = tiny_data()
+    with pytest.raises(ValueError, match="validation_callback.*epoch 0.*finite float"):
+        fit_adapter(history, catalog, vectors, 1, validation_callback=lambda model: score)
+
+
+@pytest.mark.parametrize("error_epoch", [0, 1])
+def test_callback_error_restores_global_settings_and_reports_epoch(error_epoch):
+    history, catalog, vectors = tiny_data()
+    previous = torch.are_deterministic_algorithms_enabled()
+    rng = torch.get_rng_state().clone()
+    calls = []
+    error = RuntimeError("no held-out targets")
+
+    def validate(model):
+        calls.append(model)
+        if len(calls) - 1 == error_epoch:
+            raise error
+        return 0.5
+
+    with pytest.raises(ValueError, match=f"epoch {error_epoch}.*no held-out targets") as caught:
+        fit_adapter(history, catalog, vectors, 2, validation_callback=validate)
+    assert caught.value.__cause__ is error
+    assert calls[-1].training and torch.is_grad_enabled()
+    assert torch.are_deterministic_algorithms_enabled() == previous
+    assert torch.equal(torch.get_rng_state(), rng)
+
+
+@pytest.mark.parametrize("hidden_dim,residual_scale", [(16, 0.3), (32, 0.0)])
+def test_sensitivity_parameters_and_checkpoint_roundtrip(tmp_path, hidden_dim, residual_scale):
+    history, catalog, vectors = tiny_data()
+    model, audit = fit_adapter(history, catalog, vectors, 2,
+                               hidden_dim=hidden_dim, residual_scale=residual_scale)
+    assert model.mlp[0].out_features == model.mlp[2].in_features == hidden_dim
+    assert audit["hidden_dim"] == model.hidden_dim == hidden_dim
+    assert audit["residual_scale"] == model.residual_scale == residual_scale
+    tensor = torch.from_numpy(vectors)
+    with torch.no_grad():
+        expected = torch.nn.functional.normalize(tensor + residual_scale * model.mlp(tensor), dim=1)
+    np.testing.assert_allclose(apply_adapter(model, vectors), expected.numpy(), atol=1e-7)
+    if residual_scale == 0:
+        np.testing.assert_allclose(apply_adapter(model, vectors), vectors, atol=1e-7)
+    path = tmp_path / "sensitivity.pt"
+    save_adapter(model, path)
+    restored = load_adapter(path)
+    assert restored.hidden_dim == hidden_dim and restored.residual_scale == residual_scale
+    np.testing.assert_array_equal(apply_adapter(restored, vectors), apply_adapter(model, vectors))
+
+
+@pytest.mark.parametrize("key,value", [("hidden", 0), ("hidden", True),
+                                       ("residual_scale", float("nan")), ("residual_scale", -1)])
+def test_invalid_checkpoint_sensitivity_metadata_is_rejected(tmp_path, key, value):
+    history, catalog, vectors = tiny_data()
+    model, _ = fit_adapter(history, catalog, vectors, 1)
+    original = tmp_path / "original.pt"
+    save_adapter(model, original)
+    payload = torch.load(original, weights_only=True)
+    payload[key] = value
+    bad = tmp_path / "bad.pt"
+    torch.save(payload, bad)
+    with pytest.raises(ValueError):
+        load_adapter(bad)

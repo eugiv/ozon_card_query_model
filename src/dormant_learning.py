@@ -35,7 +35,8 @@ _HARD_FEATURES = _BASE_FEATURES[:5]
 
 CHANNELS = {"lexical": "lexical_mean", "co_sales": "graph_score",
             "pretrained_embeddings": "embedding_mean", "semantic_adapter": "adapter_score",
-            "lightgcn": "lightgcn_score", "catboost_pu": "catboost_score"}
+            "lightgcn": "lightgcn_score", "catboost_pu": "catboost_score",
+            "popularity": "log_cluster_orders"}
 
 
 def _validate_pairs(frame: pd.DataFrame, name: str, required: tuple[str, ...]) -> None:

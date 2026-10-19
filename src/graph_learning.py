@@ -29,6 +29,7 @@ from cluster_data import (
     sha256,
     write_json,
 )
+from training_validation import TrainingValidation
 
 FORMAT_VERSION = 1
 LEARNING_RATE = 0.03
@@ -90,6 +91,22 @@ class GraphModel:
     @property
     def train_end(self) -> str | None:
         return self.audit["train_end"]
+
+    def query_vectors(self, catalog=None) -> tuple[np.ndarray, np.ndarray]:
+        """Копия unit-векторов в порядке catalog (по умолчанию catalog_queries).
+
+        Возвращает (vectors, available); cold/unknown queries имеют нулевую
+        строку и False. Повторы и порядок каталога сохраняются.
+        """
+        requested = self.catalog_queries if catalog is None else _catalog_queries(catalog)
+        vectors = np.zeros((len(requested), self.query_embeddings.shape[1]), dtype=np.float32)
+        available = np.zeros(len(requested), dtype=bool)
+        for row, query in enumerate(requested):
+            index = self.query_to_index.get(query)
+            if index is not None:
+                vectors[row] = self._unit_queries[index]
+                available[row] = True
+        return vectors, available
 
     def _score_profile(self, profile: np.ndarray | None, catalog) -> tuple[np.ndarray, np.ndarray]:
         requested = _catalog_queries(catalog)
@@ -188,17 +205,24 @@ def _history_dates(history: pd.DataFrame, train_end) -> dict:
 
 
 def fit_graph(history: pd.DataFrame, catalog, epochs: int = 30, dimensions: int = 32,
-              layers: int = 2, seed: int = 7, *, train_end=None) -> tuple[GraphModel, dict]:
+              layers: int = 2, seed: int = 7, *, train_end=None, validation_callback=None,
+              patience=None, min_delta=0.0, selection_metric=None) -> tuple[GraphModel, dict]:
     """Настоящие sparse CPU LightGCN + BPR по orders > 0.
 
     Каждый eligible sold edge участвует в каждой full-batch эпохе. SKU без
     неизвестных train-seen items остаётся в графе, но не участвует в BPR.
     Negative здесь означает unknown interaction, не доказанную нерелевантность.
+    Callback(GraphModel) -> finite float максимизируется на эпохах 0..N по
+    текущим propagated embeddings. Лучшие веса восстанавливаются; patience=None
+    отключает только остановку. Без callback сохраняется последняя эпоха.
     """
     for name, value, minimum in [("epochs", epochs, 1), ("dimensions", dimensions, 1),
                                  ("layers", layers, 0), ("seed", seed, 0)]:
         if isinstance(value, bool) or not isinstance(value, int) or value < minimum:
             raise ValueError(f"{name}: ожидается целое число >= {minimum}")
+    if seed >= 2**63:
+        raise ValueError("seed должен быть меньше 2**63")
+    validation = TrainingValidation(validation_callback, patience, min_delta, selection_metric)
     require_columns(history, ["sku", "normquery", "orders"])
     dates = _history_dates(history, train_end)
     catalog_queries = tuple(sorted(set(_catalog_queries(catalog))))
@@ -242,7 +266,7 @@ def fit_graph(history: pd.DataFrame, catalog, epochs: int = 30, dimensions: int 
         "eligible_edges_per_epoch": int(eligible.sum()),
         "skus_without_unknown_items": saturated,
         "skipped_edges_per_epoch": int((~eligible).sum()),
-        "edge_visits": 0, "losses": [], "bpr_losses": [],
+        "edge_visits": 0, "optimizer_steps": 0, "losses": [], "bpr_losses": [],
         "trained": False, "parameter_delta_l2": 0.0,
         "cold_item_score": 0.0, "cold_item_available": False,
         "fold_in_uses_sku_embedding": False,
@@ -256,13 +280,28 @@ def fit_graph(history: pd.DataFrame, catalog, epochs: int = 30, dimensions: int 
     before = initial.detach().clone()
     adjacency = _adjacency(torch, users, items, len(skus), len(queries))
     rng = np.random.default_rng(seed)
+
+    def inference_model():
+        with torch.no_grad():
+            embeddings = _propagate(torch, adjacency, initial, layers).numpy().copy()
+            trained_initial = initial.detach().numpy().copy()
+        if not np.isfinite(embeddings).all() or not np.isfinite(trained_initial).all():
+            raise ValueError("LightGCN embeddings не конечны")
+        return GraphModel(skus, queries, catalog_queries, trained_initial,
+                          embeddings[:len(skus)], embeddings[len(skus):], audit.copy())
+
+    def snapshot():
+        return initial.detach().clone()
+
+    if validation.enabled:
+        validation.evaluate(inference_model(), 0, snapshot)
     if len(eligible_users):
         optimizer = torch.optim.Adam([initial], lr=LEARNING_RATE)
         u = torch.from_numpy(eligible_users)
         positive = torch.from_numpy(eligible_items) + len(skus)
         weights = torch.from_numpy((1.0 / degree[eligible_users]).astype(np.float32))
         weights = weights / weights.sum()
-        for _ in range(epochs):
+        for epoch in range(1, epochs + 1):
             negatives = np.concatenate([_sample_unknown(pos, len(queries), rng, len(pos))
                                         for _, pos in groups])
             negative = torch.from_numpy(negatives) + len(skus)
@@ -275,21 +314,26 @@ def fit_graph(history: pd.DataFrame, catalog, epochs: int = 30, dimensions: int 
             if not torch.isfinite(loss):
                 raise ValueError("LightGCN loss не конечен")
             loss.backward()
+            if initial.grad is None or not torch.isfinite(initial.grad).all():
+                raise ValueError("LightGCN gradients не конечны")
             optimizer.step()
+            if not torch.isfinite(initial).all():
+                raise ValueError("LightGCN weights не конечны")
             audit["losses"].append(float(loss.detach()))
             audit["bpr_losses"].append(float(bpr.detach()))
-        audit["epochs_completed"] = epochs
-        audit["edge_visits"] = epochs * len(eligible_users)
-        audit["trained"] = True
+            audit["epochs_completed"] = epoch
+            audit["optimizer_steps"] += 1
+            audit["edge_visits"] += len(eligible_users)
+            audit["trained"] = True
+            if validation.enabled and validation.evaluate(inference_model(), epoch, snapshot):
+                break
     with torch.no_grad():
-        embeddings = _propagate(torch, adjacency, initial, layers).numpy().copy()
-        trained_initial = initial.detach().numpy().copy()
+        validation.restore(initial.copy_)
         audit["parameter_delta_l2"] = float(torch.linalg.vector_norm(initial - before))
-    if not np.isfinite(embeddings).all() or not np.isfinite(trained_initial).all():
-        raise ValueError("LightGCN embeddings не конечны")
+    audit.update(validation.audit(audit["epochs_completed"], epochs))
     audit["status"] = "trained" if audit["trained"] else "no eligible BPR edges"
-    model = GraphModel(skus, queries, catalog_queries, trained_initial,
-                       embeddings[:len(skus)], embeddings[len(skus):], audit)
+    model = inference_model()
+    model.audit = audit
     return model, audit
 
 

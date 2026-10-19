@@ -375,3 +375,148 @@ def test_import_and_cli_help_do_not_import_torch():
     result = subprocess.run([sys.executable, str(source / "graph_learning.py"), "--help"], capture_output=True, text=True,
                             check=False)
     assert result.returncode == 0 and "--train-end" in result.stdout
+
+
+@pytest.mark.parametrize("best_epoch", [0, 1])
+def test_validation_restores_best_weights_including_epoch_zero(best_epoch):
+    snapshots, scores = [], []
+
+    def validate(model):
+        assert not torch.is_grad_enabled()
+        epoch = len(snapshots)
+        assert model.audit["epochs_completed"] == epoch
+        snapshots.append((model.initial_embeddings.copy(), model.sku_embeddings.copy(),
+                          model.query_embeddings.copy()))
+        scores.append(model.score_from_seeds(["a"], catalog()))
+        expected = torch.from_numpy(model.initial_embeddings)
+        adjacency = _adjacency(torch, np.array([0, 0, 1, 1, 2, 2]),
+                               np.array([0, 1, 1, 2, 2, 3]), 3, 4)
+        propagated = _propagate(torch, adjacency, expected, 2).numpy()
+        np.testing.assert_array_equal(model.query_embeddings, propagated[3:])
+        vectors, available = model.query_vectors(model.queries)
+        np.testing.assert_allclose(vectors, propagated[3:] / np.linalg.norm(propagated[3:], axis=1, keepdims=True))
+        assert available.all()
+        if epoch:
+            assert not np.array_equal(snapshots[-1][0], snapshots[-2][0])
+            assert not np.array_equal(scores[-1][0], scores[-2][0])
+        return 1.0 if epoch == best_epoch else 0.0
+
+    model, audit = fit_graph(history(), catalog(), epochs=3, dimensions=4,
+                             validation_callback=validate, selection_metric="NDCG@5")
+    assert audit["best_epoch"] == best_epoch and audit["best_validation_score"] == 1.0
+    assert audit["validation_per_epoch"] == [float(epoch == best_epoch) for epoch in range(4)]
+    assert audit["epochs_completed"] == audit["optimizer_steps"] == 3
+    assert audit["edge_visits"] == 18
+    assert not audit["stopped_early"] and audit["selection_metric"] == "NDCG@5"
+    for actual, expected in zip((model.initial_embeddings, model.sku_embeddings, model.query_embeddings),
+                                snapshots[best_epoch]):
+        np.testing.assert_array_equal(actual, expected)
+    assert not np.array_equal(model.initial_embeddings, snapshots[-1][0])
+    for actual, expected in zip(model.score_from_seeds(["a"], catalog()), scores[best_epoch]):
+        np.testing.assert_array_equal(actual, expected)
+    assert audit["parameter_delta_l2"] == pytest.approx(
+        np.linalg.norm(snapshots[best_epoch][0] - snapshots[0][0]), abs=1e-7)
+
+
+@pytest.mark.parametrize("scores,min_delta,best_epoch", [
+    ([0.5, 0.5, 0.5], 0.0, 0),
+    ([0.0, 0.5, 0.5, 0.75, 0.75, 0.75], 0.0, 3),
+    ([0.0, 0.0625, 0.125], 0.125, 2),
+])
+def test_validation_plateau_stops_and_counts_actual_work(scores, min_delta, best_epoch):
+    values = iter(scores)
+    _, audit = fit_graph(history(), catalog(), epochs=10, dimensions=4,
+                         validation_callback=lambda model: next(values), patience=2, min_delta=min_delta)
+    completed = len(scores) - 1
+    assert audit["validation_per_epoch"] == scores
+    assert audit["epochs_completed"] == audit["optimizer_steps"] == completed
+    assert len(audit["losses"]) == len(audit["bpr_losses"]) == completed
+    assert audit["edge_visits"] == completed * 6
+    assert audit["best_epoch"] == best_epoch and audit["best_validation_score"] == max(scores)
+    assert audit["stopped_early"] and audit["epochs_requested"] == 10
+
+
+def test_validation_default_preserves_training_and_final_epoch_selection():
+    model, audit = fit_graph(history(), catalog(), epochs=3, dimensions=4)
+    explicit, explicit_audit = fit_graph(history(), catalog(), epochs=3, dimensions=4,
+                                        validation_callback=None, patience=None, min_delta=0.0)
+    values = iter([0.0, 0.25, 0.5, 0.75])
+    selected, selected_audit = fit_graph(history(), catalog(), epochs=3, dimensions=4,
+                                        validation_callback=lambda current: next(values))
+    assert audit == explicit_audit
+    assert audit["validation_per_epoch"] == [] and audit["selection_metric"] is None
+    assert audit["best_epoch"] is audit["best_validation_score"] is None
+    assert audit["epochs_completed"] == audit["optimizer_steps"] == 3 and not audit["stopped_early"]
+    assert selected_audit["losses"] == audit["losses"] and selected_audit["best_epoch"] == 3
+    for candidate in [explicit, selected]:
+        np.testing.assert_array_equal(model.initial_embeddings, candidate.initial_embeddings)
+        np.testing.assert_array_equal(model.query_embeddings, candidate.query_embeddings)
+
+
+@pytest.mark.parametrize("options", [{"validation_callback": 42}, {"patience": 0},
+                                     {"patience": 2}, {"min_delta": -1}, {"seed": 2**63}])
+def test_invalid_validation_parameters_rejected(options):
+    with pytest.raises(ValueError):
+        fit_graph(history(), catalog(), epochs=1, **options)
+
+
+@pytest.mark.parametrize("score", [float("nan"), float("inf"), None, True, "0.5"])
+def test_invalid_validation_metric_rejected(score):
+    with pytest.raises(ValueError, match="validation_callback.*epoch 0.*finite float"):
+        fit_graph(history(), catalog(), epochs=1, validation_callback=lambda model: score)
+
+
+@pytest.mark.parametrize("error_epoch", [0, 1])
+def test_callback_error_reports_epoch_and_preserves_cause(error_epoch):
+    calls = []
+    error = RuntimeError("no held-out targets")
+
+    def validate(model):
+        calls.append(model)
+        if len(calls) - 1 == error_epoch:
+            raise error
+        return 0.5
+
+    with pytest.raises(ValueError, match=f"epoch {error_epoch}.*no held-out targets") as caught:
+        fit_graph(history(), catalog(), epochs=2, validation_callback=validate)
+    assert caught.value.__cause__ is error
+    assert torch.is_grad_enabled()
+
+
+def test_query_vectors_align_catalog_mask_cold_queries_and_return_copies(trained):
+    model, _ = trained
+    requested = ["d", "cold", "a", "missing", "a"]
+    vectors, available = model.query_vectors(requested)
+    assert vectors.shape == (5, 8) and vectors.dtype == np.float32
+    assert available.tolist() == [True, False, True, False, True]
+    assert not vectors[[1, 3]].any()
+    np.testing.assert_allclose(np.linalg.norm(vectors[available], axis=1), 1, atol=1e-7)
+    np.testing.assert_array_equal(vectors[2], vectors[4])
+    expected_scores = vectors @ vectors[2]
+    np.testing.assert_allclose(model.score_from_seeds(["a"], requested)[0], expected_scores, atol=1e-7)
+    default, default_available = model.query_vectors()
+    explicit, explicit_available = model.query_vectors(model.catalog_queries)
+    np.testing.assert_array_equal(default, explicit)
+    np.testing.assert_array_equal(default_available, explicit_available)
+    vectors[:] = 0
+    assert model.query_vectors(["a"])[0].any()
+    empty, empty_available = model.query_vectors([])
+    assert empty.shape == (0, 8) and empty_available.shape == (0,)
+
+
+@pytest.mark.parametrize("data", [pd.DataFrame(columns=["sku", "normquery", "orders"]),
+                                  pd.DataFrame([["all", "a", 1]], columns=["sku", "normquery", "orders"])])
+def test_validation_without_eligible_edges_only_evaluates_epoch_zero(data):
+    calls = []
+
+    def validate(model):
+        calls.append(model.query_vectors())
+        return 0.5
+
+    model, audit = fit_graph(data, ["a", "cold"], epochs=5, dimensions=4,
+                             validation_callback=validate, patience=1)
+    assert len(calls) == 1 and audit["validation_per_epoch"] == [0.5]
+    assert audit["best_epoch"] == audit["epochs_completed"] == audit["optimizer_steps"] == 0
+    assert not audit["trained"] and not audit["stopped_early"]
+    assert audit["parameter_delta_l2"] == 0
+    np.testing.assert_array_equal(model.query_vectors()[0], calls[0][0])

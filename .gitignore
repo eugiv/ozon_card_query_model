@@ -45,6 +45,8 @@ data/
 !/reports/experiment_summary.json
 !/reports/notebook_ranking_pairs.csv
 !/reports/notebook_ranking_manifest.json
+!/reports/notebook_research.json
+!/reports/notebook_research_protocol.json
 !/reports/diploma_presentation.pptx
 !/reports/explanatory_note.docx
 !/reports/project_guide.docx

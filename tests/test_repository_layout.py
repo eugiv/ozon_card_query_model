@@ -69,14 +69,18 @@ def test_public_results_are_small_aggregate_metrics_not_private_rows():
 
 
 def test_minimal_source_layout_has_only_nine_ml_modules_and_two_document_tools():
+    """Девять основных ML-модулей дополнены только явными помощниками ноутбука."""
     expected = {
         "recommender.py", "cluster_data.py", "cluster_recommender.py",
         "dormant_learning.py", "semantic_adapter.py", "graph_learning.py",
         "full_history_recommender.py", "finalize_recommender.py", "seo_recommendation_policy.py",
+        "ranking_snapshot.py", "notebook_research.py", "training_validation.py",
     }
     assert {path.name for path in (ROOT / "src").iterdir() if path.suffix == ".py"} == expected
-    assert {path.name for path in (ROOT / "tools").iterdir() if path.suffix == ".py"} == {"defense.py"}
+    assert {path.name for path in (ROOT / "tools").iterdir() if path.suffix == ".py"} == {
+        "defense.py", "export_notebook_evaluation.py", "readable_docs.py",
+    }
     assert {path.name for path in ROOT.iterdir() if path.name.startswith("requirements")} == {"requirements.txt"}
     assert {path.name for path in (ROOT / "docs").iterdir() if path.suffix == ".md"} == {
-        "recommender_methodology.md", "explanatory_note.md",
+        "recommender_methodology.md", "explanatory_note.md", "answers_to_feedback.md", "project_manual.md",
     }

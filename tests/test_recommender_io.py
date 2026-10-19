@@ -45,5 +45,5 @@ def test_minimal_and_neural_dependencies_do_not_install_legacy_or_presentation()
     full = requirements(root / "requirements.txt")
     assert {"catboost", "scikit-learn", "numpy", "pandas", "scipy", "clickhouse-connect",
             "python-dotenv", "torch", "sentence-transformers", "python-pptx", "Pillow",
-            "python-docx", "pytest"} == full
+            "python-docx", "pytest", "jupyterlab", "ipykernel", "nbformat", "matplotlib"} == full
     assert not {"mlflow", "openpyxl", "joblib"} & full

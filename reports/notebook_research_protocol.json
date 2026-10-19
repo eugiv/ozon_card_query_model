@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-10-14T21:42:10.839553+00:00",
+  "decision": "2026-10-16",
+  "window_days": 14,
+  "train_end": "2026-08-21",
+  "selection_end": "2026-09-18",
+  "dictionary_as_of": "2026-06-26T23:59:59.999999999+00:00",
+  "per_source": 50,
+  "max_views": 5,
+  "max_seeds": 32,
+  "seed": 7,
+  "catalog_policy": "dictionary 26.06 intersect queries observed by 21.08; no future extension",
+  "selected_parameters": {
+    "adapter": {
+      "hidden_dim": 64
+    },
+    "graph": {
+      "dimensions": 32,
+      "layers": 2
+    }
+  },
+  "weights": {
+    "База: E5 + co-sales": {
+      "pretrained_embeddings": 0.5,
+      "co_sales": 0.5
+    },
+    "База + адаптер": {
+      "pretrained_embeddings": 0.0,
+      "co_sales": 0.5,
+      "semantic_adapter": 0.5
+    },
+    "База + LightGCN": {
+      "pretrained_embeddings": 0.25,
+      "co_sales": 0.25,
+      "lightgcn": 0.5
+    },
+    "Полные четыре": {
+      "pretrained_embeddings": 0.25,
+      "co_sales": 0.0,
+      "semantic_adapter": 0.25,
+      "lightgcn": 0.5
+    },
+    "Четыре без обучения": {
+      "pretrained_embeddings": 0.5,
+      "co_sales": 0.25,
+      "lexical": 0.0,
+      "popularity": 0.25
+    }
+  },
+  "frozen_vectors_sha256": "6cca3fef79a95096db4532323096a00d445b4e38954ef414e5a66714672f2350",
+  "code_sha256": {
+    "src/semantic_adapter.py": "6b63766250b0d2c68b04d8e698e5f91a34e99be73f0393f211c196090709de6a",
+    "src/graph_learning.py": "b8cd8dd797e37be74645025b1a5dea352f7221e018cc5d190d5bae2f82331f0b",
+    "src/training_validation.py": "0cfcc34234f0c8af000ec43d472676d1332a88f4d9ba57e0cde00fb8583c2ac1",
+    "src/notebook_research.py": "fb78f352b9622c0d0c8b95156da161a8143370b53a8ba0b65f544bb4bdd4d81a",
+    "src/dormant_learning.py": "904f284205b2648d0a9ea54c4dfd1b9349703dc0f20653d197b608d7cd1071ca",
+    "src/cluster_data.py": "80b485d81d4e4b7b6e2efa44f9c29e7bd0b4c4efbba62988589d66569557a40c",
+    "src/cluster_recommender.py": "9702827dce5c1549c9ce79e637b20c189c2a5d363385931d07cca9166ae1f25e",
+    "src/full_history_recommender.py": "4d6b64e89851777cbf19018caa29f7ba39d178adbcba3b217c38c87b884fdc7f"
+  },
+  "source_sha256": {
+    "facts": "eb400a29a4c40d02735d034c30292e13c4bff0e781a7b10bd6274cf815ec91b5",
+    "dictionary": "6b5ef7c6735a04cc755632f8508496dab5615ec3199939b989b14d705e5bf1c9",
+    "embeddings": "35fda89e78b324c41035b2aa9e4d0f3fcfb0029b2c076561ca1a8077fb9225db"
+  },
+  "primary_metric": "macro recall@10",
+  "secondary_metric": "macro ndcg@10",
+  "criterion": "full minus baseline > 0 and paired SKU bootstrap 95% lower > 0",
+  "bootstrap_samples": 2000,
+  "bootstrap_seed": 7,
+  "no_tuning_on_future": true,
+  "registration": "local frozen artifact; not an external preregistration"
+}
