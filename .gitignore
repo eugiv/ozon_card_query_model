@@ -47,6 +47,13 @@ data/
 !/reports/notebook_ranking_manifest.json
 !/reports/notebook_research.json
 !/reports/notebook_research_protocol.json
+!/reports/notebook_review.json
+!/reports/notebook_full_protocol.json
+!/reports/notebook_independent_registration.json
+!/reports/notebook_independent_status.json
+!/reports/notebook_current_data.json
+!/reports/notebook_current_validation.json
+!/reports/notebook_retrospective_holdout.json
 !/reports/diploma_presentation.pptx
 !/reports/explanatory_note.docx
 !/reports/project_guide.docx

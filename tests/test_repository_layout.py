@@ -75,6 +75,9 @@ def test_minimal_source_layout_has_only_nine_ml_modules_and_two_document_tools()
         "dormant_learning.py", "semantic_adapter.py", "graph_learning.py",
         "full_history_recommender.py", "finalize_recommender.py", "seo_recommendation_policy.py",
         "ranking_snapshot.py", "notebook_research.py", "training_validation.py",
+        "notebook_review.py", "research_diagnostics.py",
+        "independent_check.py", "automatic_check.py",
+        "fresh_snapshot.py", "fresh_validation.py", "retrospective_holdout.py",
     }
     assert {path.name for path in (ROOT / "src").iterdir() if path.suffix == ".py"} == expected
     assert {path.name for path in (ROOT / "tools").iterdir() if path.suffix == ".py"} == {
@@ -83,4 +86,5 @@ def test_minimal_source_layout_has_only_nine_ml_modules_and_two_document_tools()
     assert {path.name for path in ROOT.iterdir() if path.name.startswith("requirements")} == {"requirements.txt"}
     assert {path.name for path in (ROOT / "docs").iterdir() if path.suffix == ".md"} == {
         "recommender_methodology.md", "explanatory_note.md", "answers_to_feedback.md", "project_manual.md",
+        "answers_to_feedback_round2.md",
     }

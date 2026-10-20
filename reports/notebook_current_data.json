@@ -1,0 +1,1769 @@
+{
+  "status": "verified_cached_snapshot",
+  "checked_at": "2026-10-20T20:28:09.433726+00:00",
+  "snapshot_path": "data/clusters_full_20261020_873493a38ad7",
+  "manifest_sha256": "78f1fca7a0cd966bdac8a3b00d80abe82d22053461b81d88f935b09ca021d5c5",
+  "protocol_sha256": "ec2f18a79a9e38c80ce7856a7db8af6435b8ecda82d20cfff41cb58fbaa7abae",
+  "source_fingerprint": {
+    "first_day": "2026-01-09",
+    "last_day": "2026-10-17",
+    "rows": 3297720,
+    "fingerprint": 6799161737221689567
+  },
+  "source_rows": 3297720,
+  "first_day": "2026-01-09",
+  "last_day": "2026-10-17",
+  "requested_through": "2026-10-19",
+  "missing_trailing_closed_days": [
+    "2026-10-18",
+    "2026-10-19"
+  ],
+  "source_completeness_audit": {
+    "rows": 3297720,
+    "sku_count": 2178,
+    "order_count": 241140,
+    "date_min": "2026-01-09",
+    "date_max": "2026-10-17",
+    "day_count": 278,
+    "expected_day_count": 282,
+    "missing_dates": [
+      "2026-05-19",
+      "2026-06-04",
+      "2026-06-12",
+      "2026-07-21"
+    ],
+    "daily": [
+      {
+        "date": "2026-01-09",
+        "rows": 13796,
+        "sku_count": 507,
+        "order_count": 558
+      },
+      {
+        "date": "2026-01-10",
+        "rows": 13984,
+        "sku_count": 507,
+        "order_count": 588
+      },
+      {
+        "date": "2026-01-11",
+        "rows": 14220,
+        "sku_count": 509,
+        "order_count": 622
+      },
+      {
+        "date": "2026-01-12",
+        "rows": 13559,
+        "sku_count": 501,
+        "order_count": 541
+      },
+      {
+        "date": "2026-01-13",
+        "rows": 13465,
+        "sku_count": 498,
+        "order_count": 609
+      },
+      {
+        "date": "2026-01-14",
+        "rows": 13658,
+        "sku_count": 499,
+        "order_count": 633
+      },
+      {
+        "date": "2026-01-15",
+        "rows": 13620,
+        "sku_count": 496,
+        "order_count": 612
+      },
+      {
+        "date": "2026-01-16",
+        "rows": 13519,
+        "sku_count": 498,
+        "order_count": 588
+      },
+      {
+        "date": "2026-01-17",
+        "rows": 14237,
+        "sku_count": 519,
+        "order_count": 658
+      },
+      {
+        "date": "2026-01-18",
+        "rows": 15444,
+        "sku_count": 522,
+        "order_count": 792
+      },
+      {
+        "date": "2026-01-19",
+        "rows": 14954,
+        "sku_count": 512,
+        "order_count": 913
+      },
+      {
+        "date": "2026-01-20",
+        "rows": 14953,
+        "sku_count": 505,
+        "order_count": 812
+      },
+      {
+        "date": "2026-01-21",
+        "rows": 14742,
+        "sku_count": 505,
+        "order_count": 801
+      },
+      {
+        "date": "2026-01-22",
+        "rows": 14776,
+        "sku_count": 505,
+        "order_count": 860
+      },
+      {
+        "date": "2026-01-23",
+        "rows": 14902,
+        "sku_count": 500,
+        "order_count": 809
+      },
+      {
+        "date": "2026-01-24",
+        "rows": 15421,
+        "sku_count": 498,
+        "order_count": 814
+      },
+      {
+        "date": "2026-01-25",
+        "rows": 15080,
+        "sku_count": 495,
+        "order_count": 888
+      },
+      {
+        "date": "2026-01-26",
+        "rows": 14606,
+        "sku_count": 488,
+        "order_count": 806
+      },
+      {
+        "date": "2026-01-27",
+        "rows": 14387,
+        "sku_count": 488,
+        "order_count": 662
+      },
+      {
+        "date": "2026-01-28",
+        "rows": 14426,
+        "sku_count": 489,
+        "order_count": 784
+      },
+      {
+        "date": "2026-01-29",
+        "rows": 13902,
+        "sku_count": 484,
+        "order_count": 665
+      },
+      {
+        "date": "2026-01-30",
+        "rows": 13886,
+        "sku_count": 492,
+        "order_count": 718
+      },
+      {
+        "date": "2026-01-31",
+        "rows": 14636,
+        "sku_count": 492,
+        "order_count": 1102
+      },
+      {
+        "date": "2026-02-01",
+        "rows": 15131,
+        "sku_count": 493,
+        "order_count": 873
+      },
+      {
+        "date": "2026-02-02",
+        "rows": 14233,
+        "sku_count": 492,
+        "order_count": 723
+      },
+      {
+        "date": "2026-02-03",
+        "rows": 13575,
+        "sku_count": 489,
+        "order_count": 856
+      },
+      {
+        "date": "2026-02-04",
+        "rows": 13646,
+        "sku_count": 487,
+        "order_count": 758
+      },
+      {
+        "date": "2026-02-05",
+        "rows": 13735,
+        "sku_count": 487,
+        "order_count": 672
+      },
+      {
+        "date": "2026-02-06",
+        "rows": 13018,
+        "sku_count": 480,
+        "order_count": 618
+      },
+      {
+        "date": "2026-02-07",
+        "rows": 13712,
+        "sku_count": 482,
+        "order_count": 709
+      },
+      {
+        "date": "2026-02-08",
+        "rows": 14243,
+        "sku_count": 483,
+        "order_count": 844
+      },
+      {
+        "date": "2026-02-09",
+        "rows": 13746,
+        "sku_count": 485,
+        "order_count": 773
+      },
+      {
+        "date": "2026-02-10",
+        "rows": 14057,
+        "sku_count": 483,
+        "order_count": 801
+      },
+      {
+        "date": "2026-02-11",
+        "rows": 13554,
+        "sku_count": 479,
+        "order_count": 856
+      },
+      {
+        "date": "2026-02-12",
+        "rows": 13683,
+        "sku_count": 475,
+        "order_count": 811
+      },
+      {
+        "date": "2026-02-13",
+        "rows": 13640,
+        "sku_count": 472,
+        "order_count": 820
+      },
+      {
+        "date": "2026-02-14",
+        "rows": 13840,
+        "sku_count": 473,
+        "order_count": 864
+      },
+      {
+        "date": "2026-02-15",
+        "rows": 14477,
+        "sku_count": 467,
+        "order_count": 873
+      },
+      {
+        "date": "2026-02-16",
+        "rows": 13904,
+        "sku_count": 475,
+        "order_count": 886
+      },
+      {
+        "date": "2026-02-17",
+        "rows": 13418,
+        "sku_count": 472,
+        "order_count": 836
+      },
+      {
+        "date": "2026-02-18",
+        "rows": 13824,
+        "sku_count": 475,
+        "order_count": 940
+      },
+      {
+        "date": "2026-02-19",
+        "rows": 13686,
+        "sku_count": 468,
+        "order_count": 969
+      },
+      {
+        "date": "2026-02-20",
+        "rows": 13144,
+        "sku_count": 464,
+        "order_count": 1085
+      },
+      {
+        "date": "2026-02-21",
+        "rows": 13605,
+        "sku_count": 460,
+        "order_count": 1119
+      },
+      {
+        "date": "2026-02-22",
+        "rows": 13803,
+        "sku_count": 455,
+        "order_count": 1053
+      },
+      {
+        "date": "2026-02-23",
+        "rows": 13541,
+        "sku_count": 451,
+        "order_count": 1027
+      },
+      {
+        "date": "2026-02-24",
+        "rows": 13742,
+        "sku_count": 455,
+        "order_count": 810
+      },
+      {
+        "date": "2026-02-25",
+        "rows": 14098,
+        "sku_count": 454,
+        "order_count": 921
+      },
+      {
+        "date": "2026-02-26",
+        "rows": 14073,
+        "sku_count": 450,
+        "order_count": 785
+      },
+      {
+        "date": "2026-02-27",
+        "rows": 13871,
+        "sku_count": 448,
+        "order_count": 723
+      },
+      {
+        "date": "2026-02-28",
+        "rows": 13820,
+        "sku_count": 454,
+        "order_count": 883
+      },
+      {
+        "date": "2026-03-01",
+        "rows": 14753,
+        "sku_count": 454,
+        "order_count": 1545
+      },
+      {
+        "date": "2026-03-02",
+        "rows": 13801,
+        "sku_count": 444,
+        "order_count": 987
+      },
+      {
+        "date": "2026-03-03",
+        "rows": 12947,
+        "sku_count": 442,
+        "order_count": 978
+      },
+      {
+        "date": "2026-03-04",
+        "rows": 13088,
+        "sku_count": 444,
+        "order_count": 1547
+      },
+      {
+        "date": "2026-03-05",
+        "rows": 12381,
+        "sku_count": 439,
+        "order_count": 1012
+      },
+      {
+        "date": "2026-03-06",
+        "rows": 11899,
+        "sku_count": 435,
+        "order_count": 929
+      },
+      {
+        "date": "2026-03-07",
+        "rows": 12371,
+        "sku_count": 441,
+        "order_count": 864
+      },
+      {
+        "date": "2026-03-08",
+        "rows": 11741,
+        "sku_count": 442,
+        "order_count": 1462
+      },
+      {
+        "date": "2026-03-09",
+        "rows": 13496,
+        "sku_count": 438,
+        "order_count": 1454
+      },
+      {
+        "date": "2026-03-10",
+        "rows": 12557,
+        "sku_count": 434,
+        "order_count": 998
+      },
+      {
+        "date": "2026-03-11",
+        "rows": 12831,
+        "sku_count": 434,
+        "order_count": 1003
+      },
+      {
+        "date": "2026-03-12",
+        "rows": 12654,
+        "sku_count": 429,
+        "order_count": 914
+      },
+      {
+        "date": "2026-03-13",
+        "rows": 12054,
+        "sku_count": 429,
+        "order_count": 880
+      },
+      {
+        "date": "2026-03-14",
+        "rows": 12421,
+        "sku_count": 428,
+        "order_count": 997
+      },
+      {
+        "date": "2026-03-15",
+        "rows": 12715,
+        "sku_count": 425,
+        "order_count": 1056
+      },
+      {
+        "date": "2026-03-16",
+        "rows": 12778,
+        "sku_count": 465,
+        "order_count": 1122
+      },
+      {
+        "date": "2026-03-17",
+        "rows": 12773,
+        "sku_count": 484,
+        "order_count": 968
+      },
+      {
+        "date": "2026-03-18",
+        "rows": 13503,
+        "sku_count": 469,
+        "order_count": 996
+      },
+      {
+        "date": "2026-03-19",
+        "rows": 13579,
+        "sku_count": 464,
+        "order_count": 1610
+      },
+      {
+        "date": "2026-03-20",
+        "rows": 13084,
+        "sku_count": 463,
+        "order_count": 889
+      },
+      {
+        "date": "2026-03-21",
+        "rows": 13542,
+        "sku_count": 461,
+        "order_count": 910
+      },
+      {
+        "date": "2026-03-22",
+        "rows": 13867,
+        "sku_count": 463,
+        "order_count": 986
+      },
+      {
+        "date": "2026-03-23",
+        "rows": 12844,
+        "sku_count": 457,
+        "order_count": 831
+      },
+      {
+        "date": "2026-03-24",
+        "rows": 13618,
+        "sku_count": 460,
+        "order_count": 1190
+      },
+      {
+        "date": "2026-03-25",
+        "rows": 13277,
+        "sku_count": 469,
+        "order_count": 814
+      },
+      {
+        "date": "2026-03-26",
+        "rows": 13589,
+        "sku_count": 463,
+        "order_count": 743
+      },
+      {
+        "date": "2026-03-27",
+        "rows": 12518,
+        "sku_count": 455,
+        "order_count": 692
+      },
+      {
+        "date": "2026-03-28",
+        "rows": 13294,
+        "sku_count": 443,
+        "order_count": 776
+      },
+      {
+        "date": "2026-03-29",
+        "rows": 12912,
+        "sku_count": 436,
+        "order_count": 831
+      },
+      {
+        "date": "2026-03-30",
+        "rows": 12575,
+        "sku_count": 441,
+        "order_count": 787
+      },
+      {
+        "date": "2026-03-31",
+        "rows": 12800,
+        "sku_count": 439,
+        "order_count": 778
+      },
+      {
+        "date": "2026-04-01",
+        "rows": 12555,
+        "sku_count": 431,
+        "order_count": 781
+      },
+      {
+        "date": "2026-04-02",
+        "rows": 12771,
+        "sku_count": 439,
+        "order_count": 755
+      },
+      {
+        "date": "2026-04-03",
+        "rows": 12856,
+        "sku_count": 430,
+        "order_count": 772
+      },
+      {
+        "date": "2026-04-04",
+        "rows": 13007,
+        "sku_count": 423,
+        "order_count": 865
+      },
+      {
+        "date": "2026-04-05",
+        "rows": 13345,
+        "sku_count": 433,
+        "order_count": 901
+      },
+      {
+        "date": "2026-04-06",
+        "rows": 13840,
+        "sku_count": 418,
+        "order_count": 724
+      },
+      {
+        "date": "2026-04-07",
+        "rows": 14953,
+        "sku_count": 469,
+        "order_count": 833
+      },
+      {
+        "date": "2026-04-08",
+        "rows": 15294,
+        "sku_count": 469,
+        "order_count": 884
+      },
+      {
+        "date": "2026-04-09",
+        "rows": 15571,
+        "sku_count": 464,
+        "order_count": 746
+      },
+      {
+        "date": "2026-04-10",
+        "rows": 14119,
+        "sku_count": 455,
+        "order_count": 722
+      },
+      {
+        "date": "2026-04-11",
+        "rows": 13590,
+        "sku_count": 466,
+        "order_count": 718
+      },
+      {
+        "date": "2026-04-12",
+        "rows": 13266,
+        "sku_count": 451,
+        "order_count": 747
+      },
+      {
+        "date": "2026-04-13",
+        "rows": 13343,
+        "sku_count": 445,
+        "order_count": 690
+      },
+      {
+        "date": "2026-04-14",
+        "rows": 13426,
+        "sku_count": 443,
+        "order_count": 845
+      },
+      {
+        "date": "2026-04-15",
+        "rows": 13210,
+        "sku_count": 433,
+        "order_count": 803
+      },
+      {
+        "date": "2026-04-16",
+        "rows": 12774,
+        "sku_count": 429,
+        "order_count": 752
+      },
+      {
+        "date": "2026-04-17",
+        "rows": 12733,
+        "sku_count": 423,
+        "order_count": 708
+      },
+      {
+        "date": "2026-04-18",
+        "rows": 12914,
+        "sku_count": 432,
+        "order_count": 810
+      },
+      {
+        "date": "2026-04-19",
+        "rows": 13106,
+        "sku_count": 420,
+        "order_count": 934
+      },
+      {
+        "date": "2026-04-20",
+        "rows": 13000,
+        "sku_count": 426,
+        "order_count": 864
+      },
+      {
+        "date": "2026-04-21",
+        "rows": 14120,
+        "sku_count": 469,
+        "order_count": 987
+      },
+      {
+        "date": "2026-04-22",
+        "rows": 13677,
+        "sku_count": 460,
+        "order_count": 829
+      },
+      {
+        "date": "2026-04-23",
+        "rows": 13406,
+        "sku_count": 456,
+        "order_count": 846
+      },
+      {
+        "date": "2026-04-24",
+        "rows": 13299,
+        "sku_count": 448,
+        "order_count": 788
+      },
+      {
+        "date": "2026-04-25",
+        "rows": 13375,
+        "sku_count": 444,
+        "order_count": 830
+      },
+      {
+        "date": "2026-04-26",
+        "rows": 13673,
+        "sku_count": 437,
+        "order_count": 875
+      },
+      {
+        "date": "2026-04-27",
+        "rows": 14072,
+        "sku_count": 478,
+        "order_count": 822
+      },
+      {
+        "date": "2026-04-28",
+        "rows": 14603,
+        "sku_count": 490,
+        "order_count": 1260
+      },
+      {
+        "date": "2026-04-29",
+        "rows": 13845,
+        "sku_count": 471,
+        "order_count": 960
+      },
+      {
+        "date": "2026-04-30",
+        "rows": 13352,
+        "sku_count": 453,
+        "order_count": 813
+      },
+      {
+        "date": "2026-05-01",
+        "rows": 13367,
+        "sku_count": 455,
+        "order_count": 769
+      },
+      {
+        "date": "2026-05-02",
+        "rows": 4223,
+        "sku_count": 419,
+        "order_count": 252
+      },
+      {
+        "date": "2026-05-03",
+        "rows": 13109,
+        "sku_count": 458,
+        "order_count": 712
+      },
+      {
+        "date": "2026-05-04",
+        "rows": 13442,
+        "sku_count": 438,
+        "order_count": 691
+      },
+      {
+        "date": "2026-05-05",
+        "rows": 12596,
+        "sku_count": 429,
+        "order_count": 688
+      },
+      {
+        "date": "2026-05-06",
+        "rows": 12572,
+        "sku_count": 451,
+        "order_count": 650
+      },
+      {
+        "date": "2026-05-07",
+        "rows": 12872,
+        "sku_count": 469,
+        "order_count": 582
+      },
+      {
+        "date": "2026-05-08",
+        "rows": 12250,
+        "sku_count": 445,
+        "order_count": 595
+      },
+      {
+        "date": "2026-05-09",
+        "rows": 12209,
+        "sku_count": 445,
+        "order_count": 598
+      },
+      {
+        "date": "2026-05-10",
+        "rows": 12947,
+        "sku_count": 453,
+        "order_count": 636
+      },
+      {
+        "date": "2026-05-11",
+        "rows": 13232,
+        "sku_count": 439,
+        "order_count": 710
+      },
+      {
+        "date": "2026-05-12",
+        "rows": 12701,
+        "sku_count": 440,
+        "order_count": 716
+      },
+      {
+        "date": "2026-05-13",
+        "rows": 12710,
+        "sku_count": 434,
+        "order_count": 670
+      },
+      {
+        "date": "2026-05-14",
+        "rows": 12105,
+        "sku_count": 422,
+        "order_count": 642
+      },
+      {
+        "date": "2026-05-15",
+        "rows": 12130,
+        "sku_count": 497,
+        "order_count": 538
+      },
+      {
+        "date": "2026-05-16",
+        "rows": 12064,
+        "sku_count": 533,
+        "order_count": 674
+      },
+      {
+        "date": "2026-05-17",
+        "rows": 12027,
+        "sku_count": 527,
+        "order_count": 658
+      },
+      {
+        "date": "2026-05-18",
+        "rows": 11939,
+        "sku_count": 523,
+        "order_count": 577
+      },
+      {
+        "date": "2026-05-20",
+        "rows": 12003,
+        "sku_count": 537,
+        "order_count": 555
+      },
+      {
+        "date": "2026-05-21",
+        "rows": 11993,
+        "sku_count": 524,
+        "order_count": 659
+      },
+      {
+        "date": "2026-05-22",
+        "rows": 12205,
+        "sku_count": 518,
+        "order_count": 520
+      },
+      {
+        "date": "2026-05-23",
+        "rows": 12434,
+        "sku_count": 518,
+        "order_count": 540
+      },
+      {
+        "date": "2026-05-24",
+        "rows": 12732,
+        "sku_count": 529,
+        "order_count": 684
+      },
+      {
+        "date": "2026-05-25",
+        "rows": 12339,
+        "sku_count": 520,
+        "order_count": 642
+      },
+      {
+        "date": "2026-05-26",
+        "rows": 12025,
+        "sku_count": 511,
+        "order_count": 619
+      },
+      {
+        "date": "2026-05-27",
+        "rows": 12396,
+        "sku_count": 507,
+        "order_count": 632
+      },
+      {
+        "date": "2026-05-28",
+        "rows": 12226,
+        "sku_count": 511,
+        "order_count": 587
+      },
+      {
+        "date": "2026-05-29",
+        "rows": 12026,
+        "sku_count": 452,
+        "order_count": 584
+      },
+      {
+        "date": "2026-05-30",
+        "rows": 11880,
+        "sku_count": 418,
+        "order_count": 659
+      },
+      {
+        "date": "2026-05-31",
+        "rows": 12045,
+        "sku_count": 413,
+        "order_count": 643
+      },
+      {
+        "date": "2026-06-01",
+        "rows": 11680,
+        "sku_count": 399,
+        "order_count": 617
+      },
+      {
+        "date": "2026-06-02",
+        "rows": 12062,
+        "sku_count": 404,
+        "order_count": 620
+      },
+      {
+        "date": "2026-06-03",
+        "rows": 11644,
+        "sku_count": 409,
+        "order_count": 576
+      },
+      {
+        "date": "2026-06-05",
+        "rows": 11987,
+        "sku_count": 424,
+        "order_count": 567
+      },
+      {
+        "date": "2026-06-06",
+        "rows": 12104,
+        "sku_count": 431,
+        "order_count": 615
+      },
+      {
+        "date": "2026-06-07",
+        "rows": 12249,
+        "sku_count": 422,
+        "order_count": 705
+      },
+      {
+        "date": "2026-06-08",
+        "rows": 12338,
+        "sku_count": 415,
+        "order_count": 773
+      },
+      {
+        "date": "2026-06-09",
+        "rows": 12353,
+        "sku_count": 412,
+        "order_count": 748
+      },
+      {
+        "date": "2026-06-10",
+        "rows": 11911,
+        "sku_count": 417,
+        "order_count": 697
+      },
+      {
+        "date": "2026-06-11",
+        "rows": 11723,
+        "sku_count": 427,
+        "order_count": 691
+      },
+      {
+        "date": "2026-06-13",
+        "rows": 11551,
+        "sku_count": 429,
+        "order_count": 627
+      },
+      {
+        "date": "2026-06-14",
+        "rows": 11915,
+        "sku_count": 415,
+        "order_count": 699
+      },
+      {
+        "date": "2026-06-15",
+        "rows": 11738,
+        "sku_count": 409,
+        "order_count": 689
+      },
+      {
+        "date": "2026-06-16",
+        "rows": 11912,
+        "sku_count": 486,
+        "order_count": 671
+      },
+      {
+        "date": "2026-06-17",
+        "rows": 11359,
+        "sku_count": 560,
+        "order_count": 696
+      },
+      {
+        "date": "2026-06-18",
+        "rows": 10507,
+        "sku_count": 574,
+        "order_count": 479
+      },
+      {
+        "date": "2026-06-19",
+        "rows": 10644,
+        "sku_count": 566,
+        "order_count": 521
+      },
+      {
+        "date": "2026-06-20",
+        "rows": 10291,
+        "sku_count": 586,
+        "order_count": 498
+      },
+      {
+        "date": "2026-06-21",
+        "rows": 10311,
+        "sku_count": 574,
+        "order_count": 578
+      },
+      {
+        "date": "2026-06-22",
+        "rows": 15142,
+        "sku_count": 565,
+        "order_count": 811
+      },
+      {
+        "date": "2026-06-23",
+        "rows": 15119,
+        "sku_count": 571,
+        "order_count": 845
+      },
+      {
+        "date": "2026-06-24",
+        "rows": 14802,
+        "sku_count": 560,
+        "order_count": 893
+      },
+      {
+        "date": "2026-06-25",
+        "rows": 14632,
+        "sku_count": 556,
+        "order_count": 1079
+      },
+      {
+        "date": "2026-06-26",
+        "rows": 13853,
+        "sku_count": 547,
+        "order_count": 1108
+      },
+      {
+        "date": "2026-06-27",
+        "rows": 13795,
+        "sku_count": 550,
+        "order_count": 1154
+      },
+      {
+        "date": "2026-06-28",
+        "rows": 13469,
+        "sku_count": 567,
+        "order_count": 1085
+      },
+      {
+        "date": "2026-06-29",
+        "rows": 14018,
+        "sku_count": 598,
+        "order_count": 1090
+      },
+      {
+        "date": "2026-06-30",
+        "rows": 13641,
+        "sku_count": 564,
+        "order_count": 929
+      },
+      {
+        "date": "2026-07-01",
+        "rows": 13504,
+        "sku_count": 558,
+        "order_count": 977
+      },
+      {
+        "date": "2026-07-02",
+        "rows": 13198,
+        "sku_count": 571,
+        "order_count": 892
+      },
+      {
+        "date": "2026-07-03",
+        "rows": 12691,
+        "sku_count": 528,
+        "order_count": 897
+      },
+      {
+        "date": "2026-07-04",
+        "rows": 12835,
+        "sku_count": 543,
+        "order_count": 904
+      },
+      {
+        "date": "2026-07-05",
+        "rows": 12865,
+        "sku_count": 577,
+        "order_count": 987
+      },
+      {
+        "date": "2026-07-06",
+        "rows": 12498,
+        "sku_count": 527,
+        "order_count": 909
+      },
+      {
+        "date": "2026-07-07",
+        "rows": 12241,
+        "sku_count": 541,
+        "order_count": 899
+      },
+      {
+        "date": "2026-07-08",
+        "rows": 11757,
+        "sku_count": 535,
+        "order_count": 828
+      },
+      {
+        "date": "2026-07-09",
+        "rows": 11645,
+        "sku_count": 522,
+        "order_count": 856
+      },
+      {
+        "date": "2026-07-10",
+        "rows": 569,
+        "sku_count": 139,
+        "order_count": 851
+      },
+      {
+        "date": "2026-07-11",
+        "rows": 11156,
+        "sku_count": 512,
+        "order_count": 823
+      },
+      {
+        "date": "2026-07-12",
+        "rows": 11207,
+        "sku_count": 522,
+        "order_count": 902
+      },
+      {
+        "date": "2026-07-13",
+        "rows": 11255,
+        "sku_count": 523,
+        "order_count": 843
+      },
+      {
+        "date": "2026-07-14",
+        "rows": 11286,
+        "sku_count": 542,
+        "order_count": 788
+      },
+      {
+        "date": "2026-07-15",
+        "rows": 10826,
+        "sku_count": 500,
+        "order_count": 765
+      },
+      {
+        "date": "2026-07-16",
+        "rows": 495,
+        "sku_count": 131,
+        "order_count": 636
+      },
+      {
+        "date": "2026-07-17",
+        "rows": 10799,
+        "sku_count": 490,
+        "order_count": 571
+      },
+      {
+        "date": "2026-07-18",
+        "rows": 10490,
+        "sku_count": 486,
+        "order_count": 522
+      },
+      {
+        "date": "2026-07-19",
+        "rows": 10514,
+        "sku_count": 509,
+        "order_count": 555
+      },
+      {
+        "date": "2026-07-20",
+        "rows": 10506,
+        "sku_count": 496,
+        "order_count": 544
+      },
+      {
+        "date": "2026-07-22",
+        "rows": 10992,
+        "sku_count": 515,
+        "order_count": 656
+      },
+      {
+        "date": "2026-07-23",
+        "rows": 12007,
+        "sku_count": 507,
+        "order_count": 810
+      },
+      {
+        "date": "2026-07-24",
+        "rows": 11743,
+        "sku_count": 505,
+        "order_count": 860
+      },
+      {
+        "date": "2026-07-25",
+        "rows": 11554,
+        "sku_count": 517,
+        "order_count": 1031
+      },
+      {
+        "date": "2026-07-26",
+        "rows": 12341,
+        "sku_count": 529,
+        "order_count": 1147
+      },
+      {
+        "date": "2026-07-27",
+        "rows": 11830,
+        "sku_count": 510,
+        "order_count": 1082
+      },
+      {
+        "date": "2026-07-28",
+        "rows": 11817,
+        "sku_count": 538,
+        "order_count": 1419
+      },
+      {
+        "date": "2026-07-29",
+        "rows": 11745,
+        "sku_count": 501,
+        "order_count": 990
+      },
+      {
+        "date": "2026-07-30",
+        "rows": 11567,
+        "sku_count": 512,
+        "order_count": 933
+      },
+      {
+        "date": "2026-07-31",
+        "rows": 11189,
+        "sku_count": 512,
+        "order_count": 768
+      },
+      {
+        "date": "2026-08-01",
+        "rows": 11054,
+        "sku_count": 492,
+        "order_count": 885
+      },
+      {
+        "date": "2026-08-02",
+        "rows": 671,
+        "sku_count": 149,
+        "order_count": 943
+      },
+      {
+        "date": "2026-08-03",
+        "rows": 621,
+        "sku_count": 150,
+        "order_count": 897
+      },
+      {
+        "date": "2026-08-04",
+        "rows": 11157,
+        "sku_count": 294,
+        "order_count": 888
+      },
+      {
+        "date": "2026-08-05",
+        "rows": 11213,
+        "sku_count": 296,
+        "order_count": 943
+      },
+      {
+        "date": "2026-08-06",
+        "rows": 10871,
+        "sku_count": 294,
+        "order_count": 1089
+      },
+      {
+        "date": "2026-08-07",
+        "rows": 10482,
+        "sku_count": 281,
+        "order_count": 1138
+      },
+      {
+        "date": "2026-08-08",
+        "rows": 10596,
+        "sku_count": 283,
+        "order_count": 1043
+      },
+      {
+        "date": "2026-08-09",
+        "rows": 10436,
+        "sku_count": 280,
+        "order_count": 1192
+      },
+      {
+        "date": "2026-08-10",
+        "rows": 10352,
+        "sku_count": 273,
+        "order_count": 1115
+      },
+      {
+        "date": "2026-08-11",
+        "rows": 9954,
+        "sku_count": 274,
+        "order_count": 1047
+      },
+      {
+        "date": "2026-08-12",
+        "rows": 9764,
+        "sku_count": 268,
+        "order_count": 994
+      },
+      {
+        "date": "2026-08-13",
+        "rows": 10414,
+        "sku_count": 279,
+        "order_count": 870
+      },
+      {
+        "date": "2026-08-14",
+        "rows": 10541,
+        "sku_count": 280,
+        "order_count": 927
+      },
+      {
+        "date": "2026-08-15",
+        "rows": 10469,
+        "sku_count": 280,
+        "order_count": 977
+      },
+      {
+        "date": "2026-08-16",
+        "rows": 10594,
+        "sku_count": 281,
+        "order_count": 1051
+      },
+      {
+        "date": "2026-08-17",
+        "rows": 10657,
+        "sku_count": 279,
+        "order_count": 1013
+      },
+      {
+        "date": "2026-08-18",
+        "rows": 10578,
+        "sku_count": 278,
+        "order_count": 1079
+      },
+      {
+        "date": "2026-08-19",
+        "rows": 10576,
+        "sku_count": 274,
+        "order_count": 1087
+      },
+      {
+        "date": "2026-08-20",
+        "rows": 10373,
+        "sku_count": 273,
+        "order_count": 1030
+      },
+      {
+        "date": "2026-08-21",
+        "rows": 9904,
+        "sku_count": 265,
+        "order_count": 916
+      },
+      {
+        "date": "2026-08-22",
+        "rows": 10012,
+        "sku_count": 258,
+        "order_count": 869
+      },
+      {
+        "date": "2026-08-23",
+        "rows": 9657,
+        "sku_count": 247,
+        "order_count": 1079
+      },
+      {
+        "date": "2026-08-24",
+        "rows": 9337,
+        "sku_count": 251,
+        "order_count": 916
+      },
+      {
+        "date": "2026-08-25",
+        "rows": 9450,
+        "sku_count": 245,
+        "order_count": 821
+      },
+      {
+        "date": "2026-08-26",
+        "rows": 10053,
+        "sku_count": 261,
+        "order_count": 1042
+      },
+      {
+        "date": "2026-08-27",
+        "rows": 9900,
+        "sku_count": 256,
+        "order_count": 888
+      },
+      {
+        "date": "2026-08-28",
+        "rows": 9697,
+        "sku_count": 252,
+        "order_count": 966
+      },
+      {
+        "date": "2026-08-29",
+        "rows": 9624,
+        "sku_count": 249,
+        "order_count": 1082
+      },
+      {
+        "date": "2026-08-30",
+        "rows": 9352,
+        "sku_count": 239,
+        "order_count": 1228
+      },
+      {
+        "date": "2026-08-31",
+        "rows": 9199,
+        "sku_count": 238,
+        "order_count": 1089
+      },
+      {
+        "date": "2026-09-01",
+        "rows": 8707,
+        "sku_count": 238,
+        "order_count": 963
+      },
+      {
+        "date": "2026-09-02",
+        "rows": 8416,
+        "sku_count": 220,
+        "order_count": 1024
+      },
+      {
+        "date": "2026-09-03",
+        "rows": 8074,
+        "sku_count": 212,
+        "order_count": 930
+      },
+      {
+        "date": "2026-09-04",
+        "rows": 7859,
+        "sku_count": 207,
+        "order_count": 871
+      },
+      {
+        "date": "2026-09-05",
+        "rows": 7894,
+        "sku_count": 213,
+        "order_count": 786
+      },
+      {
+        "date": "2026-09-06",
+        "rows": 7540,
+        "sku_count": 201,
+        "order_count": 666
+      },
+      {
+        "date": "2026-09-07",
+        "rows": 6955,
+        "sku_count": 181,
+        "order_count": 562
+      },
+      {
+        "date": "2026-09-08",
+        "rows": 8954,
+        "sku_count": 238,
+        "order_count": 682
+      },
+      {
+        "date": "2026-09-09",
+        "rows": 9329,
+        "sku_count": 243,
+        "order_count": 1137
+      },
+      {
+        "date": "2026-09-10",
+        "rows": 9291,
+        "sku_count": 236,
+        "order_count": 1308
+      },
+      {
+        "date": "2026-09-11",
+        "rows": 9272,
+        "sku_count": 232,
+        "order_count": 1375
+      },
+      {
+        "date": "2026-09-12",
+        "rows": 9299,
+        "sku_count": 229,
+        "order_count": 1444
+      },
+      {
+        "date": "2026-09-13",
+        "rows": 8830,
+        "sku_count": 217,
+        "order_count": 1420
+      },
+      {
+        "date": "2026-09-14",
+        "rows": 8438,
+        "sku_count": 212,
+        "order_count": 1169
+      },
+      {
+        "date": "2026-09-15",
+        "rows": 7607,
+        "sku_count": 196,
+        "order_count": 966
+      },
+      {
+        "date": "2026-09-16",
+        "rows": 6595,
+        "sku_count": 176,
+        "order_count": 849
+      },
+      {
+        "date": "2026-09-17",
+        "rows": 6345,
+        "sku_count": 170,
+        "order_count": 728
+      },
+      {
+        "date": "2026-09-18",
+        "rows": 5969,
+        "sku_count": 163,
+        "order_count": 640
+      },
+      {
+        "date": "2026-09-19",
+        "rows": 6016,
+        "sku_count": 161,
+        "order_count": 599
+      },
+      {
+        "date": "2026-09-20",
+        "rows": 6138,
+        "sku_count": 172,
+        "order_count": 600
+      },
+      {
+        "date": "2026-09-21",
+        "rows": 11641,
+        "sku_count": 281,
+        "order_count": 1034
+      },
+      {
+        "date": "2026-09-22",
+        "rows": 11580,
+        "sku_count": 286,
+        "order_count": 1094
+      },
+      {
+        "date": "2026-09-23",
+        "rows": 12563,
+        "sku_count": 289,
+        "order_count": 1025
+      },
+      {
+        "date": "2026-09-24",
+        "rows": 12517,
+        "sku_count": 283,
+        "order_count": 1399
+      },
+      {
+        "date": "2026-09-25",
+        "rows": 11707,
+        "sku_count": 265,
+        "order_count": 1383
+      },
+      {
+        "date": "2026-09-26",
+        "rows": 10513,
+        "sku_count": 239,
+        "order_count": 1334
+      },
+      {
+        "date": "2026-09-27",
+        "rows": 10042,
+        "sku_count": 231,
+        "order_count": 1279
+      },
+      {
+        "date": "2026-09-28",
+        "rows": 9248,
+        "sku_count": 217,
+        "order_count": 1162
+      },
+      {
+        "date": "2026-09-29",
+        "rows": 7847,
+        "sku_count": 190,
+        "order_count": 990
+      },
+      {
+        "date": "2026-09-30",
+        "rows": 7552,
+        "sku_count": 184,
+        "order_count": 792
+      },
+      {
+        "date": "2026-10-01",
+        "rows": 7472,
+        "sku_count": 175,
+        "order_count": 745
+      },
+      {
+        "date": "2026-10-02",
+        "rows": 9526,
+        "sku_count": 242,
+        "order_count": 953
+      },
+      {
+        "date": "2026-10-03",
+        "rows": 12115,
+        "sku_count": 280,
+        "order_count": 1208
+      },
+      {
+        "date": "2026-10-04",
+        "rows": 12323,
+        "sku_count": 278,
+        "order_count": 1527
+      },
+      {
+        "date": "2026-10-05",
+        "rows": 11732,
+        "sku_count": 272,
+        "order_count": 1605
+      },
+      {
+        "date": "2026-10-06",
+        "rows": 10787,
+        "sku_count": 260,
+        "order_count": 1599
+      },
+      {
+        "date": "2026-10-07",
+        "rows": 9838,
+        "sku_count": 236,
+        "order_count": 1315
+      },
+      {
+        "date": "2026-10-08",
+        "rows": 9691,
+        "sku_count": 229,
+        "order_count": 1242
+      },
+      {
+        "date": "2026-10-09",
+        "rows": 8980,
+        "sku_count": 222,
+        "order_count": 987
+      },
+      {
+        "date": "2026-10-10",
+        "rows": 9103,
+        "sku_count": 220,
+        "order_count": 843
+      },
+      {
+        "date": "2026-10-11",
+        "rows": 8492,
+        "sku_count": 210,
+        "order_count": 925
+      },
+      {
+        "date": "2026-10-12",
+        "rows": 7766,
+        "sku_count": 192,
+        "order_count": 772
+      },
+      {
+        "date": "2026-10-13",
+        "rows": 7413,
+        "sku_count": 198,
+        "order_count": 689
+      },
+      {
+        "date": "2026-10-14",
+        "rows": 10376,
+        "sku_count": 271,
+        "order_count": 689
+      },
+      {
+        "date": "2026-10-15",
+        "rows": 10814,
+        "sku_count": 279,
+        "order_count": 704
+      },
+      {
+        "date": "2026-10-16",
+        "rows": 11097,
+        "sku_count": 279,
+        "order_count": 676
+      },
+      {
+        "date": "2026-10-17",
+        "rows": 10879,
+        "sku_count": 276,
+        "order_count": 822
+      }
+    ],
+    "monthly": [
+      {
+        "month": "2026-01",
+        "rows": 330173,
+        "sku_count": 585,
+        "order_count": 16835
+      },
+      {
+        "month": "2026-02",
+        "rows": 386819,
+        "sku_count": 536,
+        "order_count": 23888
+      },
+      {
+        "month": "2026-03",
+        "rows": 402262,
+        "sku_count": 638,
+        "order_count": 31549
+      },
+      {
+        "month": "2026-04",
+        "rows": 407095,
+        "sku_count": 746,
+        "order_count": 24864
+      },
+      {
+        "month": "2026-05",
+        "rows": 364799,
+        "sku_count": 1247,
+        "order_count": 18682
+      },
+      {
+        "month": "2026-06",
+        "rows": 348750,
+        "sku_count": 1469,
+        "order_count": 21061
+      },
+      {
+        "month": "2026-07",
+        "rows": 329122,
+        "sku_count": 1743,
+        "order_count": 25645
+      },
+      {
+        "month": "2026-08",
+        "rows": 297558,
+        "sku_count": 525,
+        "order_count": 31104
+      },
+      {
+        "month": "2026-09",
+        "rows": 262738,
+        "sku_count": 378,
+        "order_count": 30211
+      },
+      {
+        "month": "2026-10",
+        "rows": 168404,
+        "sku_count": 356,
+        "order_count": 17301
+      }
+    ]
+  },
+  "dictionary_as_of": "2026-06-26T23:59:59.999999999Z"
+}

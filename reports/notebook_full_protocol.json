@@ -1,0 +1,86 @@
+{
+  "schema_version": 2,
+  "frozen_at": "2026-10-20T14:19:17.314953+00:00",
+  "decision": "2026-10-21",
+  "window_days": 14,
+  "history_days": 14,
+  "train_end": "2026-09-04",
+  "selection_end": "2026-09-18",
+  "dictionary_as_of": "2026-06-26T23:59:59.999999999Z",
+  "catalog_clusters": 477579,
+  "catalog_policy": "entire fixed dictionary snapshot; identical to historical evaluation",
+  "model_identity": "historical_full_catalog_four_channels",
+  "seed": 7,
+  "per_source": 150,
+  "max_views": 5,
+  "max_seeds": 32,
+  "weights": {
+    "Полные четыре": {
+      "pretrained_embeddings": 0.25,
+      "co_sales": 0.25,
+      "semantic_adapter": 0.25,
+      "lightgcn": 0.25
+    },
+    "База: E5 + co-sales": {
+      "pretrained_embeddings": 0.5,
+      "co_sales": 0.5
+    }
+  },
+  "artifacts": {
+    "e5": {
+      "path": "data/e5_small_expanded.npz",
+      "sha256": "35fda89e78b324c41035b2aa9e4d0f3fcfb0029b2c076561ca1a8077fb9225db"
+    },
+    "adapter": {
+      "path": "reports/stage3_20261011_adapter/vectors.npz",
+      "sha256": "4c09604bfb7014d6656a0c45a0b3230d65ac6c1513c29dd1577ba0daeca10a7c"
+    },
+    "adapter_weights": {
+      "path": "reports/stage3_20261011_adapter/adapter.pt",
+      "sha256": "e5d3b11d6d75ec6d6f2b4b3309852e3386acd6cbbfd5d35684b8929fc5a1998b"
+    },
+    "graph": {
+      "path": "reports/stage3_graph/graph.pt",
+      "sha256": "461d24e08d4ec1b290f3155783e5f99f9527d1250899469256aaef619a88f81d"
+    },
+    "graph_catalog": {
+      "path": "reports/stage3_graph/catalog.json",
+      "sha256": "0a729b02e8e4f7c72e9efba7d4d80d7c6b9148fff2d104e22beee6f43d4e0a9f"
+    },
+    "graph_manifest": {
+      "path": "reports/stage3_graph/manifest.json",
+      "sha256": "004b55273dd7283d35ad8a748c4dd6aa0ed64353757f823d9e55234ef0ed705c"
+    },
+    "graph_metrics": {
+      "path": "reports/stage3_graph/metrics.json",
+      "sha256": "9326b9d772f0b721e9a4e204b6178ce04550e91270e7580203f63390a2b57b60"
+    }
+  },
+  "inputs": {
+    "facts": {
+      "path": "data/clusters_full_20261011/facts.csv",
+      "sha256": "eb400a29a4c40d02735d034c30292e13c4bff0e781a7b10bd6274cf815ec91b5"
+    },
+    "dictionary": {
+      "path": "data/clusters_full_20261011/dictionary.csv",
+      "sha256": "6b5ef7c6735a04cc755632f8508496dab5615ec3199939b989b14d705e5bf1c9"
+    }
+  },
+  "code_sha256": {
+    "src/notebook_review.py": "d07da80833184fef2cc8833945a1d8bc9c800b9f3f0a68ed8badedfbfb341fa2",
+    "src/notebook_research.py": "fb78f352b9622c0d0c8b95156da161a8143370b53a8ba0b65f544bb4bdd4d81a",
+    "src/cluster_data.py": "80b485d81d4e4b7b6e2efa44f9c29e7bd0b4c4efbba62988589d66569557a40c",
+    "src/cluster_recommender.py": "9702827dce5c1549c9ce79e637b20c189c2a5d363385931d07cca9166ae1f25e",
+    "src/full_history_recommender.py": "4d6b64e89851777cbf19018caa29f7ba39d178adbcba3b217c38c87b884fdc7f",
+    "src/dormant_learning.py": "904f284205b2648d0a9ea54c4dfd1b9349703dc0f20653d197b608d7cd1071ca",
+    "src/graph_learning.py": "b8cd8dd797e37be74645025b1a5dea352f7221e018cc5d190d5bae2f82331f0b"
+  },
+  "primary_metric": "macro recall@10",
+  "bootstrap_samples": 2000,
+  "bootstrap_seed": 7,
+  "criterion": "full minus baseline > 0 and paired SKU bootstrap 95% lower > 0",
+  "no_tuning_on_future": true,
+  "supersedes": "reports/notebook_research_protocol.json",
+  "registration": "local artifact only; no external preregistration",
+  "limitation": "one original seed; evaluates this frozen model, not stability of arbitrary retraining"
+}

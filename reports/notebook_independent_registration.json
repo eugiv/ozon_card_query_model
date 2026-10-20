@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "status": "registered_not_evaluated",
+  "registered_at": "2026-10-20T16:10:31.481563+00:00",
+  "protocol_sha256": "371803f7e424e2ffd1ddbbc6bd2d85e7d6563624caf2983877811ebaa06b7384",
+  "execution_sha256": "7b23c9e49581dd7304c5c6dd336c0297ff7d1e7d18da61a8d6d142d5a3883a03",
+  "history_start": "2026-10-08",
+  "history_end": "2026-10-21",
+  "target_start": "2026-10-22",
+  "target_end": "2026-11-04",
+  "registration": "local only; no external timestamp or preregistration"
+}
